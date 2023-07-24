@@ -17,6 +17,7 @@ class iob_aoi(iob_module):
         cls._create_ports()
         cls._create_wires()
         cls._create_instances()
+        cls._connect_instances()
     
     def __init__(self, name=""):
         self.name = name
