@@ -99,11 +99,17 @@ class iob_aoi(iob_module):
         self.port_map.append(p)
         return p
         
-
     def create_wire(self, name, bit_width):
         w = iob_wire(name, bit_width)
         self.wire_list.append(w)
         return w
+
+    def create_module(self, module, name, ports):
+        """Create an instance of a module and connect it to this module"""
+        inst = module(name)
+        for port in ports:
+            inst.port_map[port].connect(ports[port])
+        return inst
 
 if __name__ == "__main__":        
         #create build directory
