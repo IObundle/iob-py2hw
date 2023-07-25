@@ -44,9 +44,14 @@ class iob_aoi(iob_module):
     def _create_wires(cls):
         cls.wire_list = named_list
             ([
+                iob_wire("a_i", 1),
+                iob_wire("b_i", 1),
+                iob_wire("c_i", 1),
+                iob_wire("d_i", 1),
                 iob_wire("aab", 1),
                 iob_wire("cad", 1),
-                iob_wire("or_res", 1)
+                iob_wire("or_res", 1),
+                io_wire("y_o", 1)
             ])
                 
     @classmethod
@@ -61,12 +66,12 @@ class iob_aoi(iob_module):
 
     @classmethod
     def _connect_instances(cls):
-        cls.instance_list["and1"].port_map["a_i"].connected_to = cls.port_list["a_i"]
-        cls.instance_list["and1"].port_map["b_i"].connected_to = cls.port_list["b_i"]
+        cls.instance_list["and1"].port_map["a_i"].connected_to = cls.wire_list["a_i"]
+        cls.instance_list["and1"].port_map["b_i"].connected_to = cls.wire_list["b_i"]
         cls.instance_list["and1"].port_map["y_o"].connected_to = cls.wire_list["aab"]
 
-        cls.instance_list["and2"].port_map["a_i"].connected_to = cls.port_list["c_i"]
-        cls.instance_list["and2"].port_map["b_i"].connected_to = cls.port_list["d_i"]
+        cls.instance_list["and2"].port_map["a_i"].connected_to = cls.wire_list["c_i"]
+        cls.instance_list["and2"].port_map["b_i"].connected_to = cls.wire_list["d_i"]
         cls.instance_list["and2"].port_map["y_o"].connected_to = cls.wire_list["cad"]
 
         cls.instance_list["or1"].port_map["a_i"].connected_to = cls.wire_list["aab"]
@@ -74,7 +79,7 @@ class iob_aoi(iob_module):
         cls.instance_list["or1"].port_map["y_o"].connected_to = cls.wire_list["or_res"]
 
         cls.instance_list["inv1"].port_map["a_i"].connected_to = cls.wire_list["or_res"]
-        cls.instance_list["inv1"].port_map["y_o"].connected_to = cls.port_list["y_o"]
+        cls.instance_list["inv1"].port_map["y_o"].connected_to = cls.wire_list["y_o"]
 
 if __name__ == "__main__":        
         #create build directory
