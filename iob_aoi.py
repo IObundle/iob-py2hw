@@ -64,15 +64,16 @@ class iob_aoi(iob_module):
     def _create_instances(cls):
         cls.instance_list = named_list(
             [
-                iob_and("and1"),
-                iob_and("and2"),
-                iob_or("or1"),
-                iob_inv("inv1")
+                create_module(iob_and, "and1", {"a_i": "a_i", "b_i": "b_i", "y_o": "aab"}),
+                create_module(iob_and, "and2", {"a_i": "c_i", "b_i": "d_i", "y_o": "cad"}),
+                create_module(iob_or, "or1", {"a_i": "aab", "b_i": "cad", "y_o": "or_res"}),
+                create_module(iob_inv, "inv1", {"a_i": "or_res", "y_o": "y_o"})
             ]
         )
 
     @classmethod
     def _connect_instances(cls):
+
         cls.instance_list["and1"].port_map["a_i"].connected_to = cls.wire_list["a_i"]
         cls.instance_list["and1"].port_map["b_i"].connected_to = cls.wire_list["b_i"]
         cls.instance_list["and1"].port_map["y_o"].connected_to = cls.wire_list["aab"]
