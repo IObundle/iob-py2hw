@@ -88,6 +88,23 @@ class iob_aoi(iob_module):
         cls.instance_list["inv1"].port_map["a_i"].connected_to = cls.wire_list["or_res"]
         cls.instance_list["inv1"].port_map["y_o"].connected_to = cls.wire_list["y_o"]
 
+    def create_input_port(self, name, bit_width):
+        p = iob_port(name, "input")
+        self.port_map.append(p)
+        return p
+
+    def create_output_port(self, name, bit_width):
+        p = iob_port(name, "output")
+        p.connect(self.create_wire(name, bit_width))
+        self.port_map.append(p)
+        return p
+        
+
+    def create_wire(self, name, bit_width):
+        w = iob_wire(name, bit_width)
+        self.wire_list.append(w)
+        return w
+
 if __name__ == "__main__":        
         #create build directory
         build_dir = "build"
