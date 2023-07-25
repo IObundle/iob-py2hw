@@ -71,24 +71,6 @@ class iob_aoi(iob_module):
             ]
         )
 
-    @classmethod
-    def _connect_instances(cls):
-
-        cls.instance_list["and1"].port_map["a_i"].connected_to = cls.wire_list["a_i"]
-        cls.instance_list["and1"].port_map["b_i"].connected_to = cls.wire_list["b_i"]
-        cls.instance_list["and1"].port_map["y_o"].connected_to = cls.wire_list["aab"]
-
-        cls.instance_list["and2"].port_map["a_i"].connected_to = cls.wire_list["c_i"]
-        cls.instance_list["and2"].port_map["b_i"].connected_to = cls.wire_list["d_i"]
-        cls.instance_list["and2"].port_map["y_o"].connected_to = cls.wire_list["cad"]
-
-        cls.instance_list["or1"].port_map["a_i"].connected_to = cls.wire_list["aab"]
-        cls.instance_list["or1"].port_map["b_i"].connected_to = cls.wire_list["cad"]
-        cls.instance_list["or1"].port_map["y_o"].connected_to = cls.wire_list["or_res"]
-
-        cls.instance_list["inv1"].port_map["a_i"].connected_to = cls.wire_list["or_res"]
-        cls.instance_list["inv1"].port_map["y_o"].connected_to = cls.wire_list["y_o"]
-
     def create_input_port(self, name, bit_width):
         p = iob_port(name, "input")
         self.port_map.append(p)
