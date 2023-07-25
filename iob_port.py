@@ -1,9 +1,9 @@
 from iob_wire import iob_wire
 
-class iob_port(iob_wire):
+class iob_port():
     """Class to represent a port in an iob module"""
         
     def __init__(self, name="", bit_width=1, direction="input"):
-        super().__init__(name, bit_width)
+        self.name = name
         self.direction = direction
-        self.connected_to = None
+        self.wire = iob_wire(name, bit_width)
