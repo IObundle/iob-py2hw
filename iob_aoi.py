@@ -11,7 +11,6 @@ from iob_or import iob_or
 from iob_inv import iob_inv
 
 class iob_aoi(iob_module):
-    name = "iob_aoi"
     isPrimitive = False
 
     @classmethod
@@ -26,12 +25,23 @@ class iob_aoi(iob_module):
     def __init__(self, name=""):
         self.name = name
         #port_map is used to connect external wires to this module
-        self.port_map = copy.deepcopy(self.port_list)
-        for port in self.port_map:
-            port.connected_to = None
-        self.wire_list = copy.deepcopy(self.wire_list)
-        self.instance_list = copy.deepcopy(self.instance_list)
-        self._connect_instances()
+        self.port_map = named_list()
+        create_input_port("a_i", 1)
+        create_input_port("b_i", 1)
+        create_input_port("c_i", 1)
+        create_input_port("d_i", 1)
+        create_output_port("y_o", 1)
+        
+        self.wire_list = named_list()
+        create_wire("aab", 1)
+        create_wire("cad", 1)
+        create_wire("or_res", 1)
+
+        self.instance_list = named_list()
+        create_module(iob_and, "and1", {"a_i": "a_i", "b_i": "b_i", "y_o": "aab"})
+        create_module(iob_and, "and2", {"a_i": "c_i", "b_i": "d_i", "y_o": "cad"})
+        create_module(iob_or, "or1", {"a_i": "aab", "b_i": "cad", "y_o": "or_res"})
+        create_module(iob_inv, "inv1", {"a_i": "or_res", "y_o": "y_o"})
 
     @classmethod
     def _create_ports(cls):
@@ -91,7 +101,7 @@ class iob_aoi(iob_module):
         """Create an instance of a module and connect it to this module"""
         inst = module(name)
         for port in ports:
-            inst.port_map[port].connect(ports[port])
+            inst.port_map[port].connect(self.wire_list[ports[port]])
         return inst
 
 if __name__ == "__main__":        
@@ -101,9 +111,7 @@ if __name__ == "__main__":
             os.makedirs(build_dir)
 
         #call constructor
-        iob_aoi.init_atributes()
         aoi = iob_aoi("aoi1")
-
         #print object hierarchy
         print(aoi.name)
         for port in aoi.port_map:
@@ -113,8 +121,3 @@ if __name__ == "__main__":
         for instance in aoi.instance_list:
             print(instance.name)
         #write verilog file
-        
-
-
-
-
