@@ -11,7 +11,7 @@ from iob_or import iob_or
 from iob_inv import iob_inv
 
 class iob_aoi(iob_module):
-    isPrimitive = False
+    is_primitive = False
 
     @classmethod
     def init_atributes(cls):

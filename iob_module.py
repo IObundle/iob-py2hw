@@ -5,7 +5,7 @@ import iob_wire
 
 class iob_module:
     name = ""
-    isPrimitive = True
+    is_primitive = True
     
     def _create_ports(self):
         """To be implemented by subclass"""
