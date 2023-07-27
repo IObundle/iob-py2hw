@@ -21,13 +21,19 @@ class iob_port(iob_datum):
 
         
     def print_port_assign(self, comma=True):
+        if self.wire == None:
+            print(f"Error: Port {self.name} is not connected to a wire.")
+            exit(1)
         if comma:
             print(f"      .{self.name}({self.wire.name}),")
         else:
             print(f"      .{self.name}({self.wire.name})")
 
     def connect_wire(self, wire):
-        self.wire = wire
+        if self.width != wire.width:
+            print(f"Error: Wire width ({wire.width}) does not match port width ({port.width}).")
+            exit(1)
+        else self.wire = wire
 
 
 # Test code
