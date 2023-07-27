@@ -52,9 +52,9 @@ class iob_module:
         for p in self.port_list:
             #test if the last element
             if p == self.port_list[-1]:
-                p.print_port(comma=False)
+                p.print_port_assign(comma=False)
             else:
-                p.print_port(comma=True)
+                p.print_port_assign(comma=True)
         print(f"  );")
 
 

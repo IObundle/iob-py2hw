@@ -45,6 +45,10 @@ if __name__ == '__main__':
         ]
     )
     
+    a.port_list[0].connect_wire(iob_wire('a', 4))
+    a.port_list[1].connect_wire(iob_wire('b', 4))
+    a.port_list[2].connect_wire(iob_wire('c', 4))
+    
     a.print_verilog_module(a)
     a.print_verilog_module_inst(a)
 

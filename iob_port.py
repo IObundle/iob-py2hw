@@ -7,6 +7,7 @@ class iob_port(iob_datum):
     def __init__(self, name, width,  value, direction = "input"):
         super().__init__(name, width)
         self.direction = direction
+        self.wire = None
         # test if direction is 'input', 'output', 'inout'; exit with error otherwise
         if direction not in ["input", "output", "inout"]:
             print(f"Error: Direction must be 'input', 'output', or 'inout'.")
@@ -19,11 +20,14 @@ class iob_port(iob_datum):
             print(f"      {self.direction} [{self.width}-1:0] {self.name}")
 
         
-    def print_port_assign(self, w, comma=True):
+    def print_port_assign(self, comma=True):
         if comma:
-            print(f"      .{self.name}({w.name}),")
+            print(f"      .{self.name}({self.wire.name}),")
         else:
-            print(f"      .{self.name}({w.name})")
+            print(f"      .{self.name}({self.wire.name})")
+
+    def connect_wire(self, wire):
+        self.wire = wire
 
 
 # Test code
@@ -40,6 +44,10 @@ if __name__ == "__main__":
     port2.print_port()
     port3.print_port()
 
-    port1.print_port_assign(a)
-    port2.print_port_assign(b)
-    port3.print_port_assign(c)
+    port1.connect_wire(a)
+    port2.connect_wire(b)
+    port3.connect_wire(c)
+
+    port1.print_port_assign(port1.wire)
+    port2.print_port_assign(port2.wire)
+    port3.print_port_assign(port3.wire)
