@@ -7,9 +7,6 @@ class iob_wire(iob_datum):
 
 def unit_test():
     """Unit test for iob_wire"""
-    
-    # Print title
-    print("Unit test for iob_wire:")
 
     # Create a wire
     wire0 = iob_wire("wire0", 8, 1)
@@ -22,7 +19,7 @@ def unit_test():
     wire0.print_wire()
 
     # Print end of unit test
-    print("End of unit test for iob_wire.\n")
+    print("End of unit test for iob_wire.")
 
             
 # Test the class

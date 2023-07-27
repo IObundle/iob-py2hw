@@ -20,9 +20,6 @@ class iob_param(iob_datum):
 
 def unit_test():
     """Unit test for iob_param"""
-    
-    # Print title
-    print("Unit test for iob_param:")
 
     # Create a parameter
     param0 = iob_param("WIDTH", 32, 6)
@@ -38,7 +35,7 @@ def unit_test():
     param0.print_param_assign()
 
     # Print end of unit test
-    print("End of unit test for iob_param.\n")
+    print("End of unit test for iob_param.")
     
 # Test the class
 if __name__ == "__main__":

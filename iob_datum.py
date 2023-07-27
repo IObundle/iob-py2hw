@@ -8,9 +8,6 @@ class iob_datum:
 def unit_test():
     """Unit test for iob_datum"""
     
-    # Print title
-    print("Unit test for iob_datum:")
-    
     # Create a data item
     data0 = iob_datum("data0", 8, 6)
     # Check if the data item is correct
@@ -37,7 +34,7 @@ def unit_test():
     print(f"Name: {data1.name}, width: {data1.width}, value: {data1.value}")
     print(f"Name: {data2.name}, width: {data2.width}, value: {data2.value}")
     # Print end of unit test
-    print("End of unit test for iob_datum.\n")
+    print("End of unit test for iob_datum.")
 
 if __name__ == "__main__":
     unit_test()
