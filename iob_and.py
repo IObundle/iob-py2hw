@@ -30,26 +30,51 @@ class iob_and(iob_module):
         super().__init__(name, self.port_list, self.param_list)
             
 
-#Test
-if __name__ == '__main__':
+def unit_test():
+    """Unit test for iob_and"""
+    
+    # Create 3 wires
+    wire0 = iob_wire("wire0", 8, 1)
+    wire1 = iob_wire("wire1", 8, 2)
+    wire2 = iob_wire("wire2", 8, 3)
 
-    a = iob_and(
+    # Create iob_and instance
+    and0 = iob_and(
         name = 'and0',
         port_matrix = [
-            ['input', 'i0', 'W', 'a'],
-            ['input', 'i1', 'W', 'b'],
-            ['output', 'o0', 'W', 'c']
+            ['input', 'i0', 8, wire0],
+            ['input', 'i1', 8, wire1],
+            ['output', 'o0', 8, wire2]
         ],
         param_matrix = [
             ['W', 32, 1]
         ]
     )
-    
-    a.port_list[0].connect_wire(iob_wire('a', 4))
-    a.port_list[1].connect_wire(iob_wire('b', 4))
-    a.port_list[2].connect_wire(iob_wire('c', 4))
-    
-    a.print_verilog_module(a)
-    a.print_verilog_module_inst(a)
 
+    # Check if iob_and instance is correct
+    assert and0.name == 'and0'
+    assert and0.port_list[0].name == 'i0'
+    assert and0.port_list[0].width == 8
+    assert and0.port_list[0].value == wire0
+    assert and0.port_list[0].direction == 'input'
 
+    assert and0.port_list[1].name == 'i1'
+    assert and0.port_list[1].width == 8
+    assert and0.port_list[1].value == wire1
+    assert and0.port_list[1].direction == 'input'
+
+    assert and0.port_list[2].name == 'o0'
+    assert and0.port_list[2].width == 8
+    assert and0.port_list[2].value == wire2
+    assert and0.port_list[2].direction == 'output'
+    
+    and0.print_verilog_module(and0)
+    and0.print_verilog_module_inst(and0)
+
+    # Print end of unit test
+    print("End of unit test for iob_and.")
+    
+
+#Test
+if __name__ == '__main__':
+    unit_test()
