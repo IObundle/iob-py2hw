@@ -18,7 +18,7 @@ class iob_and(iob_module):
                 num_inputs += 1
                 if port_matrix[i][1] != 'i0':
                     raise ValueError(f"Input port {port_matrix[i][1]} should be called i0")
-            else if port_matrix[i][0] == 'output':
+            elif port_matrix[i][0] == 'output':
                 num_outputs += 1
                 if port_matrix[i][1] != 'o0':
                     raise ValueError(f"Output port {port_matrix[i][1]} should be called o0")
@@ -54,20 +54,19 @@ def unit_test():
     """Unit test for iob_and"""
     
     # Create 3 wires
-    wire0 = iob_wire("wire0", 'W', 1)
-    wire1 = iob_wire("wire1", 'W', 2)
-    wire2 = iob_wire("wire2", 'W', 3)
+    wire0 = iob_wire("wire0", 8, 1)
+    wire1 = iob_wire("wire1", 8, 2)
+    wire2 = iob_wire("wire2", 8, 3)
 
     # Create iob_and instance
     and0 = iob_and(
         name = 'and0',
         port_matrix = [
             ['input', 'i0', 'W', wire0],
-            ['input', 'i1', 'W', wire1],
+            ['input', 'i0', 'W', wire1],
             ['output', 'o0', 'W', wire2]
         ],
         param_matrix = [
-            ['W', 32, 1],
             ['N', 32, 2]
         ]
     )
@@ -79,7 +78,7 @@ def unit_test():
     assert and0.port_list[0].value == wire0
     assert and0.port_list[0].direction == 'input'
 
-    assert and0.port_list[1].name == 'i1'
+    assert and0.port_list[1].name == 'i0'
     assert and0.port_list[1].width == 'W'
     assert and0.port_list[1].value == wire1
     assert and0.port_list[1].direction == 'input'
