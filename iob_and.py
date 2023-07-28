@@ -11,11 +11,6 @@ class iob_and(iob_module):
         self.name = name
         self.port_list = []
         for i in range(len(port_matrix)):
-            # Check if port and wire have the same width
-            if port_matrix[i][2] != port_matrix[i][3].width:
-                raise ValueError(
-                    f"Port width {port_matrix[i][2]} does not match wire width {port_matrix[i][3].width}"
-                )
             self.port_list.append(
                 iob_port(
                     port_matrix[i][1],

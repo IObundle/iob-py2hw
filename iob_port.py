@@ -11,6 +11,12 @@ class iob_port(iob_datum):
         if direction not in ["input", "output", "inout"]:
             print(f"Error: Direction must be 'input', 'output', or 'inout'.")
             exit(1)
+
+        # If value is a iob_wire instance, check if the width matches
+        if isinstance(value, iob_wire):
+            if value.width != width:
+                print(f"Error: Port {self.name} width ({self.width}) does not match wire {value.name} width ({value.width}).")
+                exit(1)
         
     def print_port(self, comma=True):
         if comma:
