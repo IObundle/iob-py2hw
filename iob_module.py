@@ -8,15 +8,24 @@ class iob_module:
         self.name = name
         self.port_list = port_list
         for port in self.port_list:
-            if port.width != port.value.width:
+            if port.width != port.value.width and isinstance(port.width, int):
                 raise ValueError(f"Port width {port.width} does not match value width {port.value.width}")
+            # if port.width is str, check for parameter with the same name and compare its values
+            elif isinstance(port.width, str):
+                for param in param_list:
+                    if param.name == port.width:
+                        if param.value != port.value.width:
+                            raise ValueError(f"Parameter value {param.value} does not match port width {port.value.width}")
+                        break
+                else:
+                    param_list.append(iob_param(port.width, 32, port.value.width))
         self.param_list = param_list
         self.wire_list = wire_list
         self.inst_list = inst_list
 
     @classmethod
     def print_verilog_module(cls, self):
-        print(f"module {cls.__name__}")
+        print(f"module {self.__class__.__name__}")
         print(f"  #(")
         for p in self.param_list:
             #test if the last element
@@ -43,14 +52,14 @@ class iob_module:
 
     @classmethod
     def print_verilog_module_inst(cls, self):
-        print(f"{cls.__name__}")
+        print(f"{self.__class__.__name__}")
         print(f"  #(")
         for p in self.param_list:
             #test if the last element
             if p == self.param_list[-1]:
                 p.print_param_assign(comma=False)
             else:
-                p.print_param(comma=True)
+                p.print_param_assign(comma=True)
         print(f"  ) {self.name} (")
         for p in self.port_list:
             #test if the last element
