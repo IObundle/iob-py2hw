@@ -37,8 +37,17 @@ class iob_and(iob_module):
             raise ValueError("AND gate must have at least 2 inputs")
         if num_outputs != 1:
             raise ValueError("AND gate must have exactly 1 output")
-        self.param_list = []
+
+        # Check if parameter 'N' exists. If not, add it with value num_inputs. If it does, check if it is the same as num_inputs
+        for i in range(len(param_matrix)):
+            if param_matrix[i][0] == 'N':
+                if param_matrix[i][1] != num_inputs:
+                    raise ValueError(f"Parameter N(={param_matrix[i][1]}) should be the number of inputs:{num_inputs}")
+                break
+        else:
+            param_matrix.append(['N', num_inputs, 2])
         
+        self.param_list = []
         for i in range(len(param_matrix)):
             self.param_list.append(
                 iob_param(
@@ -67,7 +76,6 @@ def unit_test():
             ['output', 'o0', 'W', wire2]
         ],
         param_matrix = [
-            ['N', 32, 2]
         ]
     )
 
@@ -88,8 +96,8 @@ def unit_test():
     assert and0.port_list[2].value == wire2
     assert and0.port_list[2].direction == 'output'
     
-    and0.print_verilog_module(and0)
-    and0.print_verilog_module_inst(and0)
+    and0.print_verilog_module()
+    and0.print_verilog_module_inst()
 
 #Test
 if __name__ == '__main__':
