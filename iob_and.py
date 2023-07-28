@@ -10,12 +10,18 @@ class iob_and(iob_module):
         '''Constructor for the AND gate module'''
         self.name = name
         self.port_list = []
+        num_inputs = 0
+        num_outputs = 0
         for i in range(len(port_matrix)):
             # Check if input ports are called 'i0' and output ports are called 'o0'
-            if port_matrix[i][0] == 'input' and port_matrix[i][1] != 'i0':
-                raise ValueError(f"Input port {port_matrix[i][1]} should be called i0")
-            else if port_matrix[i][0] == 'output' and port_matrix[i][1] != 'o0':
-                raise ValueError(f"Output port {port_matrix[i][1]} should be called o0")
+            if port_matrix[i][0] == 'input':
+                num_inputs += 1
+                if port_matrix[i][1] != 'i0':
+                    raise ValueError(f"Input port {port_matrix[i][1]} should be called i0")
+            else if port_matrix[i][0] == 'output':
+                num_outputs += 1
+                if port_matrix[i][1] != 'o0':
+                    raise ValueError(f"Output port {port_matrix[i][1]} should be called o0")
             else:
                 raise ValueError("Ports must be input or output")
 
@@ -26,7 +32,13 @@ class iob_and(iob_module):
                     port_matrix[i][3],
                     port_matrix[i][0])
             )
+        
+        if num_inputs < 2:
+            raise ValueError("AND gate must have at least 2 inputs")
+        if num_outputs != 1:
+            raise ValueError("AND gate must have exactly 1 output")
         self.param_list = []
+        
         for i in range(len(param_matrix)):
             self.param_list.append(
                 iob_param(
