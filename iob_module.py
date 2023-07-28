@@ -11,9 +11,8 @@ class iob_module:
         self.wire_list = wire_list
         self.inst_list = inst_list
 
-    @classmethod
-    def print_verilog_module(cls, self):
-        print(f"module {cls.__name__}")
+    def print_verilog_module(self):
+        print(f"module {self.__class__.__name__}")
         print(f"  #(")
         for p in self.param_list:
             #test if the last element
@@ -38,9 +37,8 @@ class iob_module:
             
         print(f"endmodule")
 
-    @classmethod
-    def print_verilog_module_inst(cls, self):
-        print(f"{cls.__name__}")
+    def print_verilog_module_inst(self):
+        print(f"{self.__class__.__name__}")
         print(f"  #(")
         for p in self.param_list:
             #test if the last element
@@ -69,7 +67,7 @@ if __name__ == "__main__":
     
     iob = iob_module('iob', port_list, param_list, wire_list)
     
-    iob.print_verilog_module(iob)
+    iob.print_verilog_module()
 
-    iob.print_verilog_module_inst(iob)
+    iob.print_verilog_module_inst()
     
