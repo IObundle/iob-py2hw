@@ -11,6 +11,27 @@ class iob_module:
         self.wire_list = wire_list
         self.inst_list = inst_list
 
+    def check_ports(port_matrix, expected_inputs, expected_outputs, expected_inouts):
+        """Check if the port matrix has the expected number of inputs, outputs, and inouts"""
+        # Count the number of inputs, outputs, and inouts
+        num_inputs = 0
+        num_outputs = 0
+        num_inouts = 0
+        for i in range(len(port_matrix)):
+            if port_matrix[i][0] == "input":
+                num_inputs += 1
+            elif port_matrix[i][0] == "output":
+                num_outputs += 1
+            elif port_matrix[i][0] == "inout":
+                num_inouts += 1
+            else:
+                raise Exception(f"Invalid port direction: {port_matrix[i][0]}")
+
+        # Check if the number of inputs, outputs, and inouts are correct
+        assert num_inputs == expected_inputs
+        assert num_outputs == expected_outputs
+        assert num_inouts == expected_inouts
+
     def print_verilog_module(self):
         print(f"module {self.__class__.__name__}")
         print(f"  #(")
@@ -33,7 +54,7 @@ class iob_module:
             w.print_wire()
 
         for i in self.inst_list:
-            i.print_verilog_inst()
+            i.print_verilog_module_inst()
             
         print(f"endmodule")
 
