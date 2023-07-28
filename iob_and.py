@@ -11,6 +11,14 @@ class iob_and(iob_module):
         self.name = name
         self.port_list = []
         for i in range(len(port_matrix)):
+            # Check if input ports are called 'i0' and output ports are called 'o0'
+            if port_matrix[i][0] == 'input' and port_matrix[i][1] != 'i0':
+                raise ValueError(f"Input port {port_matrix[i][1]} should be called i0")
+            else if port_matrix[i][0] == 'output' and port_matrix[i][1] != 'o0':
+                raise ValueError(f"Output port {port_matrix[i][1]} should be called o0")
+            else:
+                raise ValueError("Ports must be input or output")
+
             self.port_list.append(
                 iob_port(
                     port_matrix[i][1],
