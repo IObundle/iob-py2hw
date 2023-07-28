@@ -83,7 +83,7 @@ def unit_test():
 
     iob = iob_module('iob', port_list, param_list, wire_list)
 
-    iob.print_verilog_module(iob)
+    iob.print_verilog_module()
 
 # test this class
 if __name__ == "__main__":
