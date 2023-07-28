@@ -23,8 +23,7 @@ class iob_module:
         self.wire_list = wire_list
         self.inst_list = inst_list
 
-    @classmethod
-    def print_verilog_module(cls, self):
+    def print_verilog_module(self):
         print(f"module {self.__class__.__name__}")
         print(f"  #(")
         for p in self.param_list:
@@ -50,8 +49,7 @@ class iob_module:
             
         print(f"endmodule")
 
-    @classmethod
-    def print_verilog_module_inst(cls, self):
+    def print_verilog_module_inst(self):
         print(f"{self.__class__.__name__}")
         print(f"  #(")
         for p in self.param_list:
