@@ -7,6 +7,9 @@ class iob_module:
     def __init__(self, name, port_list, param_list=[], wire_list=[], inst_list=[]):
         self.name = name
         self.port_list = port_list
+        for port in self.port_list:
+            if port.width != port.value.width:
+                raise ValueError(f"Port width {port.width} does not match value width {port.value.width}")
         self.param_list = param_list
         self.wire_list = wire_list
         self.inst_list = inst_list
@@ -58,18 +61,19 @@ class iob_module:
         print(f"  );")
 
 
-# test this class
-if __name__ == "__main__":
+def unit_test():
+    """Unit test for iob_module"""
 
     param_list = [iob_param('W', 32, 1)]
 
     port_list = [iob_port('clk', 1, '', 'input'), iob_port('rst', 1, '', 'input'), iob_port('in', 32, '', 'input'), iob_port('out', 32, '', 'output')]
 
     wire_list = [iob_wire('w1', 32), iob_wire('w2', 32)]
-    
+
     iob = iob_module('iob', port_list, param_list, wire_list)
-    
+
     iob.print_verilog_module(iob)
 
-    iob.print_verilog_module_inst(iob)
-    
+# test this class
+if __name__ == "__main__":
+    unit_test()
