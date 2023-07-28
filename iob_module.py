@@ -18,7 +18,11 @@ class iob_module:
                             raise ValueError(f"Parameter value {param.value} does not match port width {port.value.width}")
                         break
                 else:
-                    param_list.append(iob_param(port.width, 32, port.value.width))
+                    if isinstance(port.value.width, int):
+                        param_list.append(iob_param(port.width, 32, port.value.width))
+                        break
+                    raise ValueError(f"Parameter {port.width} not found")
+                
         self.param_list = param_list
         self.wire_list = wire_list
         self.inst_list = inst_list
