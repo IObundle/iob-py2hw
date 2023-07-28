@@ -58,7 +58,6 @@ def unit_test():
         name = 'and0',
         port_matrix = [
             ['input', 'i0', 'W', wire0],
-            ['input', 'i1', 'W', wire1],
             ['output', 'o0', 'W', wire2]
         ],
         param_matrix = [
@@ -74,18 +73,13 @@ def unit_test():
     assert and0.port_list[0].value == wire0
     assert and0.port_list[0].direction == 'input'
 
-    assert and0.port_list[1].name == 'i1'
+    assert and0.port_list[1].name == 'o0'
     assert and0.port_list[1].width == 'W'
-    assert and0.port_list[1].value == wire1
-    assert and0.port_list[1].direction == 'input'
+    assert and0.port_list[1].value == wire2
+    assert and0.port_list[1].direction == 'output'
 
-    assert and0.port_list[2].name == 'o0'
-    assert and0.port_list[2].width == 'W'
-    assert and0.port_list[2].value == wire2
-    assert and0.port_list[2].direction == 'output'
-    
-    and0.print_verilog_module(and0)
-    and0.print_verilog_module_inst(and0)
+    and0.print_verilog_module()
+    and0.print_verilog_module_inst()
 
 #Test
 if __name__ == '__main__':
