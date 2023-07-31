@@ -30,9 +30,10 @@ class iob_and(iob_module):
                 iob_port(
                     port_matrix[i][1],
                     port_matrix[i][2],
-                    port_matrix[i][3],
                     port_matrix[i][0])
             )
+            self.port_list[i].connect(port_matrix[i][3])
+            
         self.param_list = []
         for i in range(len(param_matrix)):
             self.param_list.append(
