@@ -72,7 +72,7 @@ def unit_test():
     # Check if iob_inv instance is correct
     assert inv0.name == 'inv0'
     assert inv0.port_list[0].name == 'i0'
-    assert inv0.port_list[0].width == 2
+    assert inv0.port_list[0].width == 1
     assert inv0.port_list[0].value == wire0
     assert inv0.port_list[0].direction == 'input'
 
