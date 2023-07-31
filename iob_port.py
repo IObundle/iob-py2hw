@@ -4,13 +4,20 @@ from iob_wire import iob_wire
 class iob_port(iob_datum):
     """Class to represent a port in an iob module"""
 
-    def __init__(self, name, width,  value, direction = "input"):
-        super().__init__(name, width, value)
+    def __init__(self, name, width, direction = "input"):
+        super().__init__(name, width)
         self.direction = direction
         # test if direction is 'input', 'output', 'inout'; exit with error otherwise
         if direction not in ["input", "output", "inout"]:
             print(f"Error: Direction must be 'input', 'output', or 'inout'.")
             exit(1)
+
+    def connect(self, value):
+        """Connect a wire to the port"""
+        if value.width != self.width:
+            print(f"Error: Port {self.name} width ({self.width}) does not match wire {value.name} width ({value.width}).")
+            exit(1)
+        self.value = value
         
     def print_port(self, comma=True):
         if comma:
@@ -37,9 +44,12 @@ def unit_test():
     wire2 = iob_wire("wire2", 8, 3)
 
     # Create 3 ports
-    port0 = iob_port("port0", 8, wire0, "input")
-    port1 = iob_port("port1", 8, wire1, "output")
-    port2 = iob_port("port2", 8, wire2, "inout")
+    port0 = iob_port("port0", 8, "input")
+    port0.connect(wire0)
+    port1 = iob_port("port1", 8, "output")
+    port1.connect(wire1)
+    port2 = iob_port("port2", 8, "inout")
+    port2.connect(wire2)
 
     # Check if the ports are correct
 
