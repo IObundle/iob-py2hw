@@ -66,7 +66,7 @@ class iob_module:
             if p == self.param_list[-1]:
                 p.print_param_assign(comma=False)
             else:
-                p.print_param(comma=True)
+                p.print_param_assign(comma=True)
         print(f"  ) {self.name} (")
         for p in self.port_list:
             #test if the last element
