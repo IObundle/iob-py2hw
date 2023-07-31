@@ -11,7 +11,7 @@ class iob_module:
         self.wire_list = wire_list
         self.inst_list = inst_list
 
-    def check_ports(self, port_matrix, expected_inputs, expected_outputs, expected_inouts):
+    def check_ports(self, port_matrix, n_inputs, n_outputs, n_inouts):
         """Check if the port matrix has the expected number of inputs, outputs, and inouts"""
         # Count the number of inputs, outputs, and inouts
         num_inputs = 0
@@ -28,9 +28,9 @@ class iob_module:
                 raise Exception(f"Invalid port direction: {port_matrix[i][0]}")
 
         # Check if the number of inputs, outputs, and inouts are correct
-        assert num_inputs == expected_inputs
-        assert num_outputs == expected_outputs
-        assert num_inouts == expected_inouts
+        assert num_inputs == n_inputs
+        assert num_outputs == n_outputs
+        assert num_inouts == n_inouts
 
     def print_verilog_module(self):
         print(f"module {self.__class__.__name__}")
