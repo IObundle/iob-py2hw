@@ -10,11 +10,9 @@ class iob_and(iob_module):
         '''Constructor for the AND gate module'''
         self.name = name
         self.port_list = []
-        # Check if port_matrix 2 rows and 4 columns the first column must contain 'input' and 'output'
-        if len(port_matrix) != 2:
-            raise ValueError('Port matrix must have 2 rows')
-        if len(port_matrix[0]) != 4 or len(port_matrix[1]) != 4:
-            raise ValueError('Port matrix must have 4 columns')
+
+        # Check if the port matrix has the expected number of inputs, outputs, and inouts
+        self.check_ports(port_matrix, 1, 1, 0)
         
         for i in range(len(port_matrix)):
             # If port is input, check if is called "i0", if not, raise error

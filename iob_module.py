@@ -11,7 +11,7 @@ class iob_module:
         self.wire_list = wire_list
         self.inst_list = inst_list
 
-    def check_ports(port_matrix, expected_inputs, expected_outputs, expected_inouts):
+    def check_ports(self, port_matrix, expected_inputs, expected_outputs, expected_inouts):
         """Check if the port matrix has the expected number of inputs, outputs, and inouts"""
         # Count the number of inputs, outputs, and inouts
         num_inputs = 0
