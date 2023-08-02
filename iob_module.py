@@ -11,10 +11,41 @@ class iob_module:
             {'name': 'N', 'min_value': 2, 'max_value': 32}]
     def __init__(self, name, port_list, param_list=[], wire_list=[], inst_list=[]):
         self.name = name
-        self.port_list = port_list
-        self.param_list = param_list
+        self.__class__.check_ports(port_list)
+        self.__class__.check_params(param_list)
+        self.port_list = []
+        for p in port_list:
+            if p['direction'] == 'input':
+                width = param_list['W'] * param_list['N']
+            elif p['direction'] == 'output':
+                width = param_list['W']
+            port = self.create_port(p['name'], width, p['direction'])
+            port.connect(p['wire'])
+
+        self.param_list = []
+        for p in param_list:
+            param = self.create_param(p, param_list[p])
+            
         self.wire_list = wire_list
         self.inst_list = inst_list
+
+    def creat_wire(self, name, width, value):
+        """Create a wire"""
+        wire = iob_wire(name, width, value)
+        self.wire_list.append(wire)
+        return wire
+
+    def create_port(self, name, width, direction):
+        """Create a port"""
+        port = iob_port(name, width, direction)
+        self.port_list.append(port)
+        return port
+
+    def create_param(self, name, value):
+        """Create a param"""
+        param = iob_param(name, value)
+        self.param_list.append(param)
+        return param
 
     @classmethod
     def check_ports(cls, ports):
@@ -27,7 +58,7 @@ class iob_module:
             if p['name'] not in cls.ports:
                 raise ValueError(f"Port {p['name']} is not valid for {cls.__name__}")
         # Check port direction
-            if cls.ports[p] != p['direction']:
+            if cls.ports[p['name']] != p['direction']:
                 raise ValueError(f"Port {p['name']} has wrong direction")
 
     @classmethod
@@ -35,6 +66,7 @@ class iob_module:
         """Check if the params are valid for the module"""
         # Check number of params
         if len(params) != len(cls.params):
+            raise ValueError(f"Wrong number of params")
         for p in params:
             for i in cls.params:
                 if p == i['name']:
@@ -46,14 +78,6 @@ class iob_module:
             
     def print_verilog_module(self):
         print(f"module {self.__class__.__name__}")
-        print(f"  #(")
-        for p in self.param_list:
-            #test if the last element
-            if p == self.param_list[-1]:
-                p.print_param(comma=False)
-            else:
-                p.print_param(comma=True)
-        print(f"  )")
         print(f"  (")
         for p in self.port_list:
             #test if the last element
@@ -72,14 +96,6 @@ class iob_module:
 
     def print_verilog_module_inst(self):
         print(f"{self.__class__.__name__}")
-        print(f"  #(")
-        for p in self.param_list:
-            #test if the last element
-            if p == self.param_list[-1]:
-                p.print_param_assign(comma=False)
-            else:
-                p.print_param_assign(comma=True)
-        print(f"  ) {self.name} (")
         for p in self.port_list:
             #test if the last element
             if p == self.port_list[-1]:
@@ -92,15 +108,15 @@ class iob_module:
 # test this class
 if __name__ == "__main__":
 
-    param_list = [iob_param('W', 32, 1)]
+    # Create 2 wires
+    w0 = iob_wire('w0', 2, 0)
+    w1 = iob_wire('w1', 1, 0)
 
-    port_list = [iob_port('clk', 1, '', 'input'), iob_port('rst', 1, '', 'input'), iob_port('in', 32, '', 'input'), iob_port('out', 32, '', 'output')]
-
-    wire_list = [iob_wire('w1', 32), iob_wire('w2', 32)]
-    
-    iob = iob_module('iob', port_list, param_list, wire_list)
-    
-    iob.print_verilog_module()
-
-    iob.print_verilog_module_inst()
+    # create module
+    m0 = iob_module('m0', [{'name': 'i0', 'direction': 'input', 'wire': w0},
+                    {'name': 'o0', 'direction': 'output', 'wire': w1}],
+                    {'W': 1, 'N': 2})
+                    
+    m0.print_verilog_module()
+    m0.print_verilog_module_inst()
     
