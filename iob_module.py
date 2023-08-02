@@ -1,4 +1,3 @@
-from iob_param import iob_param
 from iob_port import iob_port
 from iob_wire import iob_wire
 
@@ -9,23 +8,20 @@ class iob_module:
             'o0': 'output'}
     params = [{'name': 'W', 'min_value': 1, 'max_value': 32},
             {'name': 'N', 'min_value': 2, 'max_value': 32}]
-    def __init__(self, name, port_list, param_list=[], wire_list=[], inst_list=[]):
+    def __init__(self, name, port_list, param_dict, wire_list=[], inst_list=[]):
         self.name = name
         self.__class__.check_ports(port_list)
-        self.__class__.check_params(param_list)
+        self.__class__.check_params(param_dict)
         self.port_list = []
         for p in port_list:
             if p['direction'] == 'input':
-                width = param_list['W'] * param_list['N']
+                width = param_dict['W'] * param_dict['N']
             elif p['direction'] == 'output':
-                width = param_list['W']
+                width = param_dict['W']
             port = self.create_port(p['name'], width, p['direction'])
             port.connect(p['wire'])
 
-        self.param_list = []
-        for p in param_list:
-            param = self.create_param(p, param_list[p])
-            
+        self.param_dict = param_dict
         self.wire_list = wire_list
         self.inst_list = inst_list
 
@@ -40,12 +36,6 @@ class iob_module:
         port = iob_port(name, width, direction)
         self.port_list.append(port)
         return port
-
-    def create_param(self, name, value):
-        """Create a param"""
-        param = iob_param(name, value)
-        self.param_list.append(param)
-        return param
 
     @classmethod
     def check_ports(cls, ports):
