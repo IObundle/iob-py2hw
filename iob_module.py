@@ -18,6 +18,9 @@ class iob_module:
 
     def check_ports(self, ports):
         """Check if the ports are valid for the module"""    
+        # Check number of ports
+        if len(ports) != len(self.__class__.ports):
+            raise ValueError(f"Wrong number of ports")
         for p in ports:
         # Check if port exists
             if p not in self.__class__.ports:
@@ -28,6 +31,8 @@ class iob_module:
 
     def check_params(self, params):
         """Check if the params are valid for the module"""
+        # Check number of params
+        if len(params) != len(self.__class__.params):
         for p in params:
             for i in self.__class__.params:
                 if p == i['name']:
