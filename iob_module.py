@@ -23,7 +23,10 @@ class iob_module:
             port.connect(p['wire'])
             self.port_list.append(port)
 
-        self.param_list = param_list
+        self.param_list = []
+        for p in param_list:
+            param = create_param(p, param_list[p])
+            
         self.wire_list = wire_list
         self.inst_list = inst_list
 
@@ -32,6 +35,12 @@ class iob_module:
         port = iob_port(name, width, direction)
         self.port_list.append(port)
         return port
+
+    def create_param(self, name, value):
+        """Create a param"""
+        param = iob_param(name, value)
+        self.param_list.append(param)
+        return param
 
     @classmethod
     def check_ports(cls, ports):
