@@ -18,14 +18,25 @@ class iob_module:
 
     def check_ports(self, ports):
         """Check if the ports are valid for the module"""    
-        # Check if ports are valid
         for p in ports:
+        # Check if port exists
             if p not in self.__class__.ports:
                 raise ValueError(f"Port {p} is not valid for {self.__class__.__name__}")
         # Check port direction
             if self.__class__.ports[p] != ports[p]:
                 raise ValueError(f"Port {p} has wrong direction")
 
+    def check_params(self, params):
+        """Check if the params are valid for the module"""
+        for p in params:
+            for i in self.__class__.params:
+                if p == i['name']:
+                    if params[p] < i['min_value'] or params[p] > i['max_value']:
+                        raise ValueError(f"Param {p} has wrong value")
+                    break
+            else:
+                raise ValueError(f"Param {p['name']} not found in {self.__class__.__name__}")
+            
     def print_verilog_module(self):
         print(f"module {self.__class__.__name__}")
         print(f"  #(")
