@@ -21,7 +21,6 @@ class iob_module:
                 width = param_list['W']
             port = self.create_port(p['name'], width, p['direction'])
             port.connect(p['wire'])
-            self.port_list.append(port)
 
         self.param_list = []
         for p in param_list:
@@ -136,5 +135,4 @@ if __name__ == "__main__":
                     
     m0.print_verilog_module()
     m0.print_verilog_module_inst()
-    
     
