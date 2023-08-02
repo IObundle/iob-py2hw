@@ -11,10 +11,27 @@ class iob_module:
             {'name': 'N', 'min_value': 2, 'max_value': 32}]
     def __init__(self, name, port_list, param_list=[], wire_list=[], inst_list=[]):
         self.name = name
-        self.port_list = port_list
+        self.__class__.check_ports(port_list)
+        self.__class__.check_params(param_list)
+        self.port_list = []
+        for p in port_list:
+            if p['direction'] == 'input':
+                width = param_list['W'] * param_list['N']
+            elif p['direction'] == 'output':
+                width = param_list['W']
+            port = create_port(p['name'], width, p['direction'])
+            port.connect(p['wire'])
+            self.port_list.append(port)
+
         self.param_list = param_list
         self.wire_list = wire_list
         self.inst_list = inst_list
+
+    def create_port(self, name, width, direction):
+        """Create a port"""
+        port = iob_port(name, width, direction)
+        self.port_list.append(port)
+        return port
 
     @classmethod
     def check_ports(cls, ports):
