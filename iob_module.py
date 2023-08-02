@@ -78,14 +78,6 @@ class iob_module:
             
     def print_verilog_module(self):
         print(f"module {self.__class__.__name__}")
-        print(f"  #(")
-        for p in self.param_list:
-            #test if the last element
-            if p == self.param_list[-1]:
-                p.print_param(comma=False)
-            else:
-                p.print_param(comma=True)
-        print(f"  )")
         print(f"  (")
         for p in self.port_list:
             #test if the last element
@@ -104,14 +96,6 @@ class iob_module:
 
     def print_verilog_module_inst(self):
         print(f"{self.__class__.__name__}")
-        print(f"  #(")
-        for p in self.param_list:
-            #test if the last element
-            if p == self.param_list[-1]:
-                p.print_param_assign(comma=False)
-            else:
-                p.print_param_assign(comma=True)
-        print(f"  ) {self.name} (")
         for p in self.port_list:
             #test if the last element
             if p == self.port_list[-1]:
