@@ -19,16 +19,22 @@ class iob_module:
                 width = param_list['W'] * param_list['N']
             elif p['direction'] == 'output':
                 width = param_list['W']
-            port = create_port(p['name'], width, p['direction'])
+            port = self.create_port(p['name'], width, p['direction'])
             port.connect(p['wire'])
             self.port_list.append(port)
 
         self.param_list = []
         for p in param_list:
-            param = create_param(p, param_list[p])
+            param = self.create_param(p, param_list[p])
             
         self.wire_list = wire_list
         self.inst_list = inst_list
+
+    def creat_wire(self, name, width, value):
+        """Create a wire"""
+        wire = iob_wire(name, width, value)
+        self.wire_list.append(wire)
+        return wire
 
     def create_port(self, name, width, direction):
         """Create a port"""
@@ -53,7 +59,7 @@ class iob_module:
             if p['name'] not in cls.ports:
                 raise ValueError(f"Port {p['name']} is not valid for {cls.__name__}")
         # Check port direction
-            if cls.ports[p] != p['direction']:
+            if cls.ports[p['name']] != p['direction']:
                 raise ValueError(f"Port {p['name']} has wrong direction")
 
     @classmethod
@@ -61,6 +67,7 @@ class iob_module:
         """Check if the params are valid for the module"""
         # Check number of params
         if len(params) != len(cls.params):
+            raise ValueError(f"Wrong number of params")
         for p in params:
             for i in cls.params:
                 if p == i['name']:
@@ -118,15 +125,16 @@ class iob_module:
 # test this class
 if __name__ == "__main__":
 
-    param_list = [iob_param('W', 32, 1)]
+    # Create 2 wires
+    w0 = iob_wire('w0', 2, 0)
+    w1 = iob_wire('w1', 1, 0)
 
-    port_list = [iob_port('clk', 1, '', 'input'), iob_port('rst', 1, '', 'input'), iob_port('in', 32, '', 'input'), iob_port('out', 32, '', 'output')]
-
-    wire_list = [iob_wire('w1', 32), iob_wire('w2', 32)]
+    # create module
+    m0 = iob_module('m0', [{'name': 'i0', 'direction': 'input', 'wire': w0},
+                    {'name': 'o0', 'direction': 'output', 'wire': w1}],
+                    {'W': 1, 'N': 2})
+                    
+    m0.print_verilog_module()
+    m0.print_verilog_module_inst()
     
-    iob = iob_module('iob', port_list, param_list, wire_list)
-    
-    iob.print_verilog_module()
-
-    iob.print_verilog_module_inst()
     
