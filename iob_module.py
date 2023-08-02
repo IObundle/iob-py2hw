@@ -24,11 +24,11 @@ class iob_module:
             raise ValueError(f"Wrong number of ports")
         for p in ports:
         # Check if port exists
-            if p not in cls.ports:
-                raise ValueError(f"Port {p} is not valid for {cls.__name__}")
+            if p['name'] not in cls.ports:
+                raise ValueError(f"Port {p['name']} is not valid for {cls.__name__}")
         # Check port direction
-            if cls.ports[p] != ports[p]:
-                raise ValueError(f"Port {p} has wrong direction")
+            if cls.ports[p] != p['direction']:
+                raise ValueError(f"Port {p['name']} has wrong direction")
 
     @classmethod
     def check_params(cls, params):
