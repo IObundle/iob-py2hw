@@ -16,31 +16,33 @@ class iob_module:
         self.wire_list = wire_list
         self.inst_list = inst_list
 
-    def check_ports(self, ports):
+    @classmethod
+    def check_ports(cls, ports):
         """Check if the ports are valid for the module"""    
         # Check number of ports
-        if len(ports) != len(self.__class__.ports):
+        if len(ports) != len(cls.ports):
             raise ValueError(f"Wrong number of ports")
         for p in ports:
         # Check if port exists
-            if p not in self.__class__.ports:
-                raise ValueError(f"Port {p} is not valid for {self.__class__.__name__}")
+            if p not in cls.ports:
+                raise ValueError(f"Port {p} is not valid for {cls.__name__}")
         # Check port direction
-            if self.__class__.ports[p] != ports[p]:
+            if cls.ports[p] != ports[p]:
                 raise ValueError(f"Port {p} has wrong direction")
 
-    def check_params(self, params):
+    @classmethod
+    def check_params(cls, params):
         """Check if the params are valid for the module"""
         # Check number of params
-        if len(params) != len(self.__class__.params):
+        if len(params) != len(cls.params):
         for p in params:
-            for i in self.__class__.params:
+            for i in cls.params:
                 if p == i['name']:
                     if params[p] < i['min_value'] or params[p] > i['max_value']:
                         raise ValueError(f"Param {p} has wrong value")
                     break
             else:
-                raise ValueError(f"Param {p['name']} not found in {self.__class__.__name__}")
+                raise ValueError(f"Param {p['name']} not found in {cls.__name__}")
             
     def print_verilog_module(self):
         print(f"module {self.__class__.__name__}")
