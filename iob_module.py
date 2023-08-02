@@ -4,6 +4,11 @@ from iob_wire import iob_wire
 
 class iob_module:
     """Class to represent a Verilog module"""
+    # Default ports and parameters
+    ports = {'i0': 'input',
+            'o0': 'output'}
+    params = [{'name': 'W', 'min_value': 1, 'max_value': 32},
+            {'name': 'N', 'min_value': 2, 'max_value': 32}]
     def __init__(self, name, port_list, param_list=[], wire_list=[], inst_list=[]):
         self.name = name
         self.port_list = port_list
@@ -11,27 +16,34 @@ class iob_module:
         self.wire_list = wire_list
         self.inst_list = inst_list
 
-    def check_ports(self, port_matrix, n_inputs, n_outputs, n_inouts):
-        """Check if the port matrix has the expected number of inputs, outputs, and inouts"""
-        # Count the number of inputs, outputs, and inouts
-        num_inputs = 0
-        num_outputs = 0
-        num_inouts = 0
-        for i in range(len(port_matrix)):
-            if port_matrix[i][0] == "input":
-                num_inputs += 1
-            elif port_matrix[i][0] == "output":
-                num_outputs += 1
-            elif port_matrix[i][0] == "inout":
-                num_inouts += 1
+    @classmethod
+    def check_ports(cls, ports):
+        """Check if the ports are valid for the module"""    
+        # Check number of ports
+        if len(ports) != len(cls.ports):
+            raise ValueError(f"Wrong number of ports")
+        for p in ports:
+        # Check if port exists
+            if p not in cls.ports:
+                raise ValueError(f"Port {p} is not valid for {cls.__name__}")
+        # Check port direction
+            if cls.ports[p] != ports[p]:
+                raise ValueError(f"Port {p} has wrong direction")
+
+    @classmethod
+    def check_params(cls, params):
+        """Check if the params are valid for the module"""
+        # Check number of params
+        if len(params) != len(cls.params):
+        for p in params:
+            for i in cls.params:
+                if p == i['name']:
+                    if params[p] < i['min_value'] or params[p] > i['max_value']:
+                        raise ValueError(f"Param {p} has wrong value")
+                    break
             else:
-                raise Exception(f"Invalid port direction: {port_matrix[i][0]}")
-
-        # Check if the number of inputs, outputs, and inouts are correct
-        assert num_inputs == n_inputs
-        assert num_outputs == n_outputs
-        assert num_inouts == n_inouts
-
+                raise ValueError(f"Param {p['name']} not found in {cls.__name__}")
+            
     def print_verilog_module(self):
         print(f"module {self.__class__.__name__}")
         print(f"  #(")
