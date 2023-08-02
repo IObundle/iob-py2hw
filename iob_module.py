@@ -5,8 +5,8 @@ from iob_wire import iob_wire
 class iob_module:
     """Class to represent a Verilog module"""
     # Default ports and parameters
-    ports = [{'name': 'i0', 'width': 'N*W', 'direction': 'input'},
-            {'name': 'o0', 'width': 'W', 'direction': 'output'}]
+    ports = {'i0': 'input',
+            'o0': 'output'}
     params = [{'name': 'W', 'min_value': 1, 'max_value': 32},
             {'name': 'N', 'min_value': 2, 'max_value': 32}]
     def __init__(self, name, port_list, param_list=[], wire_list=[], inst_list=[]):
