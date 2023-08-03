@@ -8,7 +8,7 @@ class iob_module:
             'o0': 'output'}
     params = [{'name': 'W', 'min_value': 1, 'max_value': 32},
             {'name': 'N', 'min_value': 2, 'max_value': 32}]
-    def __init__(self, name, port_list, param_dict, wire_list=[], inst_list=[], suffix=""):
+    def __init__(self, name, port_list, param_dict, suffix, wire_list=[], inst_list=[]):
         self.name = name
         self.suffix = suffix
         self.__class__.check_ports(port_list)
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     # create module
     m0 = iob_module('m0', [{'name': 'i0', 'direction': 'input', 'wire': w0},
                     {'name': 'o0', 'direction': 'output', 'wire': w1}],
-                    {'W': 1, 'N': 2})
+                    {'W': 1, 'N': 2}, "_suffix")
                     
     m0.print_verilog_module()
     m0.print_verilog_module_inst()
