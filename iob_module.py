@@ -65,7 +65,7 @@ class iob_module:
                         raise ValueError(f"Param {p} has wrong value")
                     break
             else:
-                raise ValueError(f"Param {p['name']} not found in {cls.__name__}")
+                raise ValueError(f"Param {p} is not valid for {cls.__name__}")
             
     def print_verilog_module(self):
         print(f"module {self.__class__.__name__}{self.suffix}")
