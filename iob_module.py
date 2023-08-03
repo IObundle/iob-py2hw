@@ -8,8 +8,9 @@ class iob_module:
             'o0': 'output'}
     params = [{'name': 'W', 'min_value': 1, 'max_value': 32},
             {'name': 'N', 'min_value': 2, 'max_value': 32}]
-    def __init__(self, name, port_list, param_dict, wire_list=[], inst_list=[]):
+    def __init__(self, name, port_list, param_dict, wire_list=[], inst_list=[], suffix=""):
         self.name = name
+        self.suffix = suffix
         self.__class__.check_ports(port_list)
         self.__class__.check_params(param_dict)
         self.port_list = []
@@ -67,7 +68,7 @@ class iob_module:
                 raise ValueError(f"Param {p['name']} not found in {cls.__name__}")
             
     def print_verilog_module(self):
-        print(f"module {self.__class__.__name__}")
+        print(f"module {self.__class__.__name__}{self.suffix}")
         print(f"  (")
         for p in self.port_list:
             #test if the last element
@@ -85,7 +86,8 @@ class iob_module:
         print(f"endmodule")
 
     def print_verilog_module_inst(self):
-        print(f"{self.__class__.__name__}")
+        print(f"{self.__class__.__name__}{self.suffix} {self.name}")
+        print(f"  (")
         for p in self.port_list:
             #test if the last element
             if p == self.port_list[-1]:
