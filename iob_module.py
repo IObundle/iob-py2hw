@@ -67,7 +67,7 @@ class iob_module:
                 raise ValueError(f"Param {p['name']} not found in {cls.__name__}")
             
     def print_verilog_module(self):
-        print(f"module {self.__class__.__name__}")
+        print(f"module {self.__class__.__name__}_{self.param_dict['N']}_{self.param_dict['W']}")
         print(f"  (")
         for p in self.port_list:
             #test if the last element
@@ -85,7 +85,8 @@ class iob_module:
         print(f"endmodule")
 
     def print_verilog_module_inst(self):
-        print(f"{self.__class__.__name__}")
+        print(f"{self.__class__.__name__}_{self.param_dict['N']}_{self.param_dict['W']} {self.name}")
+        print(f"  (")
         for p in self.port_list:
             #test if the last element
             if p == self.port_list[-1]:
