@@ -26,7 +26,7 @@ class iob_module:
         self.wire_list = wire_list
         self.inst_list = inst_list
 
-    def creat_wire(self, name, width, value):
+    def create_wire(self, name, width, value):
         """Create a wire"""
         wire = iob_wire(name, width, value)
         self.wire_list.append(wire)
