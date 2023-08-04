@@ -26,7 +26,7 @@ class iob_module:
         self.wire_list = wire_list
         self.inst_list = inst_list
 
-    def creat_wire(self, name, width, value):
+    def create_wire(self, name, width, value):
         """Create a wire"""
         wire = iob_wire(name, width, value)
         self.wire_list.append(wire)
@@ -37,6 +37,12 @@ class iob_module:
         port = iob_port(name, width, direction)
         self.port_list.append(port)
         return port
+
+    def create_instance(self, module, name, port_list, param_dict, suffix):
+        """Create an instance of a module"""
+        inst = module(name, port_list, param_dict, suffix)
+        self.inst_list.append(inst)
+        return inst
 
     @classmethod
     def check_ports(cls, ports, params):
