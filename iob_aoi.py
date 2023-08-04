@@ -53,19 +53,14 @@ class iob_aoi(iob_module):
                             {'name': 'o0', 'wire': port_wire_dict['o0'], 'direction': 'output'}]
 
         # Create AND0 module
-        and0 = iob_and('and0', and0_port_list, and0_param_dict, '_aoi_in')
+        and0 = self.create_instance(iob_and, 'and0', and0_port_list, and0_param_dict, '_aoi_in')
         # Create AND1 module
-        and1 = iob_and('and1', and1_port_list, and1_param_dict, '_aoi_in')
+        and1 = self.create_instance(iob_and, 'and1', and1_port_list, and1_param_dict, '_aoi_in')
         # Create OR0 module
-        or0 = iob_or('or0', or0_port_list, or0_param_dict, '_aoi_mid')
+        or0 = self.create_instance(iob_or, 'or0', or0_port_list, or0_param_dict, '_aoi_mid')
         # Create INV0 module
-        inv0 = iob_inv('inv0', inv0_port_list, inv0_param_dict, '_aoi_out')
+        inv0 = self.create_instance(iob_inv, 'inv0', inv0_port_list, inv0_param_dict, '_aoi_out')
 
-        # Add instances to self.inst_list
-        self.inst_list.append(and0)
-        self.inst_list.append(and1)
-        self.inst_list.append(or0)
-        self.inst_list.append(inv0)
         
          
 

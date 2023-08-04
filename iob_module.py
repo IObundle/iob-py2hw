@@ -38,6 +38,12 @@ class iob_module:
         self.port_list.append(port)
         return port
 
+    def create_instance(self, module, name, port_list, param_dict, suffix):
+        """Create an instance of a module"""
+        inst = module(name, port_list, param_dict, suffix)
+        self.inst_list.append(inst)
+        return inst
+
     @classmethod
     def check_ports(cls, ports, params):
         """Check if the ports are valid for the module"""    
