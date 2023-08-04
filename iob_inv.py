@@ -6,7 +6,7 @@ from iob_wire import iob_wire
 class iob_inv(iob_module):
     '''Class for the INV gate module'''
     # Default ports and parameters
-    ports = {'i0': 'input',
+    ports = {'i': 'input',
             'o0': 'output'}
     params = [{'name': 'W', 'min_value': 1, 'max_value': 32},
             {'name': 'N', 'min_value': 1, 'max_value': 1}]
