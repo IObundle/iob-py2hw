@@ -18,6 +18,10 @@ class iob_port(iob_datum):
             print(f"Error: Port {self.name} width ({self.width}) does not match wire {value.name} width ({value.width}).")
             exit(1)
         self.value = value
+
+    def wire(self):
+        """Return the wire connected to the port"""
+        return self.value
         
     def print_port(self, comma=True):
         if comma:
