@@ -21,7 +21,13 @@ class iob_aoi(iob_module):
     def __init__(self, instance_name, port_list, param_dict, module_suffix, description):
         """Constructor for AOI module"""
         # Call iob_module constructor
-        super().__init__(instance_name=instance_name, port_list=port_list, param_dict=param_dict, module_suffix=module_suffix, description=description)
+        super().__init__(
+            instance_name = instance_name,
+            port_list = port_list,
+            param_dict = param_dict,
+            module_suffix = module_suffix,
+            description = description
+        )
         # Create wires
         and0_out = self.create_wire(name='and0_out', width=param_dict['W'], value=0)
         and1_out = self.create_wire(name='and1_out', width=param_dict['W'], value=0)
