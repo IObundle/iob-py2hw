@@ -112,11 +112,11 @@ def unit_test():
         instance_name = 'aoi0',
         param_dict = {'W': 2},
         port_list = [
-            {'name': 'i0', 'connect2wire': w0, 'direction': 'input'},
-            {'name': 'i1', 'connect2wire': w1, 'direction': 'input'},
-            {'name': 'i2', 'connect2wire': w2, 'direction': 'input'},
-            {'name': 'i3', 'connect2wire': w3, 'direction': 'input'},
-            {'name': 'o0', 'connect2wire': w4, 'direction': 'output'}
+            {'name': 'i0', 'direction': 'input', 'connect2wire': w0},
+            {'name': 'i1', 'direction': 'input', 'connect2wire': w1},
+            {'name': 'i2', 'direction': 'input', 'connect2wire': w2},
+            {'name': 'i3', 'direction': 'input', 'connect2wire': w3},
+            {'name': 'o0', 'direction': 'output', 'connect2wire': w4}
         ]
     )
     
