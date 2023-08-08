@@ -32,39 +32,6 @@ class iob_aoi(iob_module):
         and0_out = self.create_wire(name='and0_out', width=param_dict['W'], value=0)
         and1_out = self.create_wire(name='and1_out', width=param_dict['W'], value=0)
         or0_out = self.create_wire(name='or0_out', width=param_dict['W'], value=0)
-        
-        # Create param_dict for AND0
-        and0_param_dict = {'W': param_dict['W']}
-        # Create param_dict for AND1
-        and1_param_dict = {'W': param_dict['W']}
-        # Create param_dict for OR0
-        or0_param_dict = {'W': param_dict['W']}
-        # Create param_dict for INV0
-        inv0_param_dict = {'W': param_dict['W']}
-
-        # Create AND0 port_list
-        and0_port_list = [
-            {'name': 'i0', 'wire': self.i0, 'direction': 'input'},
-            {'name': 'i1', 'wire': self.i1, 'direction': 'input'},
-            {'name': 'o0', 'wire': and0_out, 'direction': 'output'}
-        ]
-        # Create AND1 port_list
-        and1_port_list = [
-            {'name': 'i0', 'wire': self.i2, 'direction': 'input'},
-            {'name': 'i1', 'wire': self.i3, 'direction': 'input'},
-            {'name': 'o0', 'wire': and1_out, 'direction': 'output'}
-        ]
-        # Create OR0 port_list
-        or0_port_list = [
-            {'name': 'i0', 'wire': and0_out, 'direction': 'input'},
-            {'name': 'i1', 'wire': and1_out, 'direction': 'input'},
-            {'name': 'o0', 'wire': or0_out, 'direction': 'output'}
-        ]
-        # Create INV0 port_list
-        inv0_port_list = [
-            {'name': 'i0', 'wire': or0_out, 'direction': 'input'},
-            {'name': 'o0', 'wire': self.o0, 'direction': 'output'}
-        ]
 
         # Create AND0 module
         and0 = self.create_instance(
@@ -74,8 +41,12 @@ class iob_aoi(iob_module):
             description = 'AND0 module',
             #instance
             instance_name = 'and0',
-            param_dict = and0_param_dict,
-            port_list = and0_port_list
+            param_dict = {'W': param_dict['W']},
+            port_list = [
+                {'name': 'i0', 'direction': 'input', 'connect2wire': self.i0},
+                {'name': 'i1', 'direction': 'input', 'connect2wire': self.i1},
+                {'name': 'o0', 'direction': 'output', 'connect2wire': and0_out}
+            ]
         )
         # Create AND1 module
         and1 = self.create_instance(
@@ -85,8 +56,12 @@ class iob_aoi(iob_module):
             description = 'AND1 module',
             #instance
             instance_name = 'and1',
-            param_dict = and1_param_dict,
-            port_list = and1_port_list
+            param_dict = {'W': param_dict['W']},
+            port_list = [
+                {'name': 'i0', 'direction': 'input', 'connect2wire': self.i2},
+                {'name': 'i1', 'direction': 'input', 'connect2wire': self.i3},
+                {'name': 'o0', 'direction': 'output', 'connect2wire': and1_out}
+            ]
         )
         # Create OR0 module
         or0 = self.create_instance(
@@ -96,8 +71,12 @@ class iob_aoi(iob_module):
             description = 'OR0 module',
             #instance
             instance_name = 'or0',
-            param_dict = or0_param_dict,
-            port_list = or0_port_list
+            param_dict = {'W': param_dict['W']},
+            port_list = [
+                {'name': 'i0', 'direction': 'input', 'connect2wire': and0_out},
+                {'name': 'i1', 'direction': 'input', 'connect2wire': and1_out},
+                {'name': 'o0', 'direction': 'output', 'connect2wire': or0_out}
+            ]
         )
         # Create INV0 module
         inv0 = self.create_instance(
@@ -107,8 +86,11 @@ class iob_aoi(iob_module):
             description = 'INV0 module',
             #instance
             instance_name = 'inv0',
-            param_dict = inv0_param_dict,
-            port_list = inv0_port_list
+            param_dict = {'W': param_dict['W']},
+            port_list = [
+                {'name': 'i0', 'direction': 'input', 'connect2wire': or0_out},
+                {'name': 'o0', 'direction': 'output', 'connect2wire': self.o0}
+            ]
         )
         
 
@@ -130,11 +112,11 @@ def unit_test():
         instance_name = 'aoi0',
         param_dict = {'W': 2},
         port_list = [
-            {'name': 'i0', 'wire': w0, 'direction': 'input'},
-            {'name': 'i1', 'wire': w1, 'direction': 'input'},
-            {'name': 'i2', 'wire': w2, 'direction': 'input'},
-            {'name': 'i3', 'wire': w3, 'direction': 'input'},
-            {'name': 'o0', 'wire': w4, 'direction': 'output'}
+            {'name': 'i0', 'connect2wire': w0, 'direction': 'input'},
+            {'name': 'i1', 'connect2wire': w1, 'direction': 'input'},
+            {'name': 'i2', 'connect2wire': w2, 'direction': 'input'},
+            {'name': 'i3', 'connect2wire': w3, 'direction': 'input'},
+            {'name': 'o0', 'connect2wire': w4, 'direction': 'output'}
         ]
     )
     

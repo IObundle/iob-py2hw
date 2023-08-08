@@ -32,9 +32,9 @@ def unit_test():
         instance_name = 'and0',
         param_dict = {'W': 10},
         port_list = [
-            {'name': 'i0', 'wire': w0, 'direction': 'input'},
-            {'name': 'i1', 'wire': w1, 'direction': 'input'},
-            {'name': 'o0', 'wire': w2, 'direction': 'output'}
+            {'name': 'i0', 'direction': 'input', 'connect2wire': w0},
+            {'name': 'i1', 'direction': 'input', 'connect2wire': w1},
+            {'name': 'o0', 'direction': 'output', 'connect2wire': w2}
         ]
     )
                             
