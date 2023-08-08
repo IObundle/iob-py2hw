@@ -13,10 +13,7 @@ class iob_and(iob_module):
         'i1': {'direction':'input', 'description':'Input port'},
         'o0': {'direction':'output', 'description':'Output port'}
     }
-    #maybe needs a constructor to solve the N problem?
 
-
-    
 def unit_test():
     """Unit test for iob_and"""
 

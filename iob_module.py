@@ -10,9 +10,10 @@ class iob_module:
         'a0': {'direction':'input', 'description':'Input port'},
         'o0': {'direction':'output', 'description':'Output port'}
     }
-    def __init__(self, instance_name, port_list, param_dict, module_suffix, description='', wire_list=[], inst_list=[]):
+    def __init__(self, instance_name, port_list, param_dict, module_suffix, description, wire_list=[], inst_list=[]):
         self.instance_name = instance_name
         self.module_suffix = module_suffix
+        self.description = description
         self.__class__.check_params(param_dict)
         self.param_dict = param_dict
         self.__class__.check_ports(port_list)
@@ -36,9 +37,9 @@ class iob_module:
         setattr(self, name, port)
         return port
 
-    def create_instance(self, module, name, port_list, param_dict, suffix):
+    def create_instance(self, module, instance_name, port_list, param_dict, module_suffix, description):
         """Create an instance of a module"""
-        inst = module(name, port_list, param_dict, suffix)
+        inst = module(instance_name, port_list, param_dict, module_suffix, description)
         self.inst_list.append(inst)
         return inst
 
