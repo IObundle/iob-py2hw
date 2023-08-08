@@ -14,7 +14,6 @@ class iob_module:
         self.__class__.check_params(param_dict)
         self.param_dict = param_dict
         self.__class__.check_ports(port_list, param_dict)
-        self.port_list = []
         for p in port_list:
             if p['direction'] == 'input':
                 width = param_dict['W']
@@ -26,7 +25,7 @@ class iob_module:
         self.wire_list = wire_list
         self.inst_list = inst_list
 
-    def creat_wire(self, name, width, value):
+    def create_wire(self, name, width, value):
         """Create a wire"""
         wire = iob_wire(name, width, value)
         self.wire_list.append(wire)
@@ -35,8 +34,14 @@ class iob_module:
     def create_port(self, name, width, direction):
         """Create a port"""
         port = iob_port(name, width, direction)
-        self.port_list.append(port)
+        setattr(self, name, port)
         return port
+
+    def create_instance(self, module, name, port_list, param_dict, suffix):
+        """Create an instance of a module"""
+        inst = module(name, port_list, param_dict, suffix)
+        self.inst_list.append(inst)
+        return inst
 
     @classmethod
     def check_ports(cls, ports, params):
@@ -78,9 +83,11 @@ class iob_module:
     def print_verilog_module(self):
         print(f"module {self.__class__.__name__}{self.suffix}")
         print(f"  (")
-        for p in self.port_list:
+        # Filter attributes of type iob_port using vars() using list comprehention
+        port_list = [attr for attr in vars(self).values() if isinstance(attr, iob_port)]
+        for p in port_list:
             #test if the last element
-            if p == self.port_list[-1]:
+            if p == port_list[-1]:
                 p.print_port(comma=False)
             else:
                 p.print_port(comma=True)
@@ -96,9 +103,11 @@ class iob_module:
     def print_verilog_module_inst(self):
         print(f"{self.__class__.__name__}{self.suffix} {self.name}")
         print(f"  (")
-        for p in self.port_list:
+        # Filter attributes of type iob_port using vars() using list comprehention
+        port_list = [attr for attr in vars(self).values() if isinstance(attr, iob_port)]
+        for p in port_list:
             #test if the last element
-            if p == self.port_list[-1]:
+            if p == port_list[-1]:
                 p.print_port_assign(comma=False)
             else:
                 p.print_port_assign(comma=True)
