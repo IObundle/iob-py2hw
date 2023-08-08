@@ -20,7 +20,7 @@ class iob_module:
         for p in port_list:
             width = param_dict['W']
             port = self.create_port(p['name'], width, p['direction'])
-            port.connect(p['wire'])
+            port.connect(p['connect_to'])
 
         self.wire_list = wire_list
         self.inst_list = inst_list
@@ -123,8 +123,8 @@ if __name__ == "__main__":
         instance_name = 'm0',
         param_dict = {'W': 1},
         port_list = [
-            {'name': 'a0', 'direction': 'input', 'wire': w0},
-            {'name': 'o0', 'direction': 'output', 'wire': w1}
+            {'name': 'a0', 'direction': 'input', 'connect_to': w0},
+            {'name': 'o0', 'direction': 'output', 'connect_to': w1}
         ]
     )
                     

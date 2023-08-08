@@ -14,6 +14,8 @@ class iob_port(iob_datum):
 
     def connect(self, value):
         """Connect a wire to the port"""
+        if not isinstance(value, (iob_wire, iob_port)):
+            raise ValueError(f"Error: Port {self.name} can only be connected to a wire or port.")
         if value.width != self.width:
             print(f"Error: Port {self.name} width ({self.width}) does not match wire {value.name} width ({value.width}).")
             exit(1)
@@ -31,8 +33,8 @@ class iob_port(iob_datum):
 
         
     def print_port_assign(self, comma=True):
-        if not isinstance(self.value, iob_wire):
-            print(f"Error: Port {self.name} is not connected to a wire.")
+        if not isinstance(self.value, (iob_wire, iob_port)):
+            print(f"Error: Port {self.name} is not connected.")
             exit(1)
         if comma:
             print(f"      .{self.name}({self.value.name}),")
