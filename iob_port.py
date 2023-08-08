@@ -31,8 +31,8 @@ class iob_port(iob_datum):
 
         
     def print_port_assign(self, comma=True):
-        if not isinstance(self.value, iob_wire):
-            print(f"Error: Port {self.name} is not connected to a wire.")
+        if not isinstance(self.value, (iob_wire, iob_port)):
+            print(f"Error: Port {self.name} is not connected.")
             exit(1)
         if comma:
             print(f"      .{self.name}({self.value.name}),")
