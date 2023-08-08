@@ -28,8 +28,8 @@ def unit_test():
         instance_name = 'inv0',
         param_dict = {'W': 1},
         port_list = [
-            {'name': 'i0', 'direction': 'input', 'connect2wire': w0},
-            {'name': 'o0', 'direction': 'output', 'connect2wire': w1}
+            {'name': 'i0', 'direction': 'input', 'connect_to': w0},
+            {'name': 'o0', 'direction': 'output', 'connect_to': w1}
         ]
     )
 
