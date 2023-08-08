@@ -7,9 +7,10 @@ from iob_inv import iob_inv
 
 class iob_aoi(iob_module):
     """AOI module class"""
-    # Default ports and parameters
+
     ports = {'i': 'input',
             'o0': 'output'}
+    
     params = [{'name': 'W', 'min_value': 1, 'max_value': 32},
             {'name': 'N', 'min_value': 4, 'max_value': 4}]
 
@@ -18,7 +19,7 @@ class iob_aoi(iob_module):
         # Call iob_module constructor
         super().__init__(name, ports, params, suffix)
         # Create wires
-        and0_out = self.create_wire('and0_out', params['W'], 0)
+        and0_out = self.create_wire(name='and0_out', params['W'], 0)
         and1_out = self.create_wire('and1_out', params['W'], 0)
         or0_out = self.create_wire('or0_out', params['W'], 0)
         
