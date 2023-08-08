@@ -6,27 +6,21 @@ from iob_wire import iob_wire
 class iob_and(iob_module):
     '''Class for the AND gate module'''
     params = [
-        #N cannot easily be handled by iob_module
-        #if it is known to iob_module then name should not be passed
-        #etc 
-        {'name': 'N', 'min_value': 2, 'max_value': 32, 'description': 'Number of inputs'},
-        {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of inputs'},
+        {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of inputs'}
     ]
     ports = {
-        'i': ['input', 'description'],
-        'o0': ['output', 'description'],
+        'i0': {'direction':'input', 'description':'Input port'},
+        'i1': {'direction':'input', 'description':'Input port'},
+        'o0': {'direction':'output', 'description':'Output port'}
     }
-    #maybe needs a constructor to solve the N problem?
 
-
-    
 def unit_test():
     """Unit test for iob_and"""
 
     # Create 3 wires
-    w0 = iob_wire(name='w0', width=0, value=0)
-    w1 = iob_wire('w1', 10, 0)
-    w2 = iob_wire('w2', 10, 0)
+    w0 = iob_wire(name='w0', width=10, value=0)
+    w1 = iob_wire(name='w1', width=10, value=0)
+    w2 = iob_wire(name='w2', width=10, value=0)
     
     # Create module and instance of the module
     # a variation of class iob_and called iob_and_0
@@ -36,10 +30,12 @@ def unit_test():
         description='AND gate bla bla bla',
         #instance 
         instance_name = 'and0',
-        param_dict {'W': 10, 'N': 2},
-        port_list = [{'name': 'i0', 'wire': w0, 'direction': 'input'},
-                     {'name': 'i1', 'wire': w1, 'direction': 'input'},
-                     {'name': 'o0', 'wire': w2, 'direction': 'output'}],
+        param_dict = {'W': 10},
+        port_list = [
+            {'name': 'i0', 'wire': w0, 'direction': 'input'},
+            {'name': 'i1', 'wire': w1, 'direction': 'input'},
+            {'name': 'o0', 'wire': w2, 'direction': 'output'}
+        ]
     )
                             
     and0.print_verilog_module()
