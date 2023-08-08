@@ -6,12 +6,12 @@ from iob_wire import iob_wire
 class iob_and(iob_module):
     '''Class for the AND gate module'''
     params = [
-        {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of inputs'}
+        {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of signals'}
     ]
     ports = {
-        'i0': {'direction':'input', 'description':'Input port'},
-        'i1': {'direction':'input', 'description':'Input port'},
-        'o0': {'direction':'output', 'description':'Output port'}
+        'i0': {'direction':'input', 'description':'Operand 0'},
+        'i1': {'direction':'input', 'description':'Operand 1'},
+        'o0': {'direction':'output', 'description':'Result'}
     }
 
 def unit_test():
@@ -21,16 +21,17 @@ def unit_test():
     w0 = iob_wire(name='w0', width=10, value=0)
     w1 = iob_wire(name='w1', width=10, value=0)
     w2 = iob_wire(name='w2', width=10, value=0)
+
+    width = 10
     
-    # Create module and instance of the module
-    # a variation of class iob_and called iob_and_0
+    # Create module variation and an instance
     and0 = iob_and(
         #module
-        module_suffix='_0',
-        description='AND gate bla bla bla',
+        module_suffix='_'+str(width),
+        description=f'2-input bit-wise AND gate with {width} bit operands and result',
         #instance 
         instance_name = 'and0',
-        param_dict = {'W': 10},
+        param_dict = {'W': width},
         port_list = [
             {'name': 'i0', 'direction': 'input', 'connect_to': w0},
             {'name': 'i1', 'direction': 'input', 'connect_to': w1},

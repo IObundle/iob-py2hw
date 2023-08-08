@@ -6,20 +6,21 @@ from iob_or import iob_or
 from iob_inv import iob_inv
 
 class iob_aoi(iob_module):
-    """AOI module class"""
+    """AOI module class. Contains 2 AND gates (AND0 and AND1), 1 OR gate (OR0), and 1 INVERTER gate (INV0). 
+    Performs the following operation: o0 = ~((i0 & i1) | (i2 & i3))."""
     params = [
-        {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of inputs'}
+        {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of input and output ports'}
     ]
     ports = {
-        'i0': {'direction':'input', 'description':'Input port for AND0'},
-        'i1': {'direction':'input', 'description':'Input port for AND0'},
-        'i2': {'direction':'input', 'description':'Input port for AND1'},
-        'i3': {'direction':'input', 'description':'Input port for AND1'},
-        'o0': {'direction':'output', 'description':'Output port'}
+        'i0': {'direction':'input', 'description':'Operand 0 for or AND0'},
+        'i1': {'direction':'input', 'description':'Operand 1 for or AND0'},
+        'i2': {'direction':'input', 'description':'Operand 0 for or AND1'},
+        'i3': {'direction':'input', 'description':'Operand 1 for or AND1'},
+        'o0': {'direction':'output', 'description':'Result of the operation'}
     }
 
     def __init__(self, instance_name, port_list, param_dict, module_suffix, description):
-        """Constructor for AOI module"""
+        """Constructor for the AOI module"""
         # Call iob_module constructor
         super().__init__(
             instance_name = instance_name,
@@ -28,6 +29,7 @@ class iob_aoi(iob_module):
             module_suffix = module_suffix,
             description = description
         )
+        
         # Create wires
         and0_out = self.create_wire(name='and0_out', width=param_dict['W'], value=0)
         and1_out = self.create_wire(name='and1_out', width=param_dict['W'], value=0)
@@ -103,14 +105,16 @@ def unit_test():
     w3 = iob_wire(name='w3', width=2, value=0)
     w4 = iob_wire(name='w4', width=2, value=0)
 
+    width = 2
+
     # Create module
     aoi0 = iob_aoi(
         #module
-        module_suffix = '_aoi0',
-        description = 'AOI0 module',
+        module_suffix = '_'+str(width),
+        description = f'AOI module for {width}-bit operands',
         #instance
         instance_name = 'aoi0',
-        param_dict = {'W': 2},
+        param_dict = {'W': width},
         port_list = [
             {'name': 'i0', 'direction': 'input', 'connect_to': w0},
             {'name': 'i1', 'direction': 'input', 'connect_to': w1},
