@@ -5,26 +5,37 @@ from iob_wire import iob_wire
 
 class iob_or(iob_module):
     '''Class for the OR gate module'''
-    # Default ports and parameters
-    ports = {'i': 'input',
-            'o0': 'output'}
-    params = [{'name': 'W', 'min_value': 1, 'max_value': 32},
-            {'name': 'N', 'min_value': 2, 'max_value': 32}]
-
+    params = [
+        {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of inputs'}
+    ]
+    ports = {
+        'i0': {'direction':'input', 'description':'Input port'},
+        'i1': {'direction':'input', 'description':'Input port'},
+        'o0': {'direction':'output', 'description':'Output port'}
+    }
+    
 def unit_test():
     """Unit test for iob_or"""
 
     # Create 3 wires
-    w0 = iob_wire('w0', 1, 0)
-    w1 = iob_wire('w1', 1, 0)
-    w2 = iob_wire('w2', 1, 0)
+    w0 = iob_wire(name='w0', width=1, value=0)
+    w1 = iob_wire(name='w1', width=1, value=0)
+    w2 = iob_wire(name='w2', width=1, value=0)
     
     # Create module
-    or0 = iob_or('or0', [{'name': 'i0', 'wire': w0, 'direction': 'input'},
-                            {'name': 'i1', 'wire': w1, 'direction': 'input'},
-                            {'name': 'o0', 'wire': w1, 'direction': 'output'}],
-                            {'W': 1, 'N': 2}, '_0')
-                            
+    or0 = iob_or(
+        #module
+        module_suffix='_0',
+        description='OR gate bla bla bla',
+        #instance
+        instance_name = 'or0',
+        param_dict = {'W': 1},
+        port_list = [
+            {'name': 'i0', 'wire': w0, 'direction': 'input'},
+            {'name': 'i1', 'wire': w1, 'direction': 'input'},
+            {'name': 'o0', 'wire': w1, 'direction': 'output'}
+        ]
+    )                        
     
     or0.print_verilog_module()
     or0.print_verilog_module_inst()
