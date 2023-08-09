@@ -3,9 +3,10 @@ from iob_wire import iob_wire
 from iob_assign import iob_assign
 
 class iob_uassign(iob_assign):
-    '''Class for the assign statement'''
+    '''Class for the unary assign statement'''
     def __init__(self, name, operator, operand, result, description):
-        super().__init__(name, operator, result, description)
+        super().__init__(name, result, description)
+        self.operator = operator
         self.operand = operand
 
     def print_verilog(self):
