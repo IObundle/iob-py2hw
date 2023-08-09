@@ -6,12 +6,12 @@ from iob_wire import iob_wire
 class iob_or(iob_module):
     '''Class for the OR gate module'''
     params = [
-        {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of inputs'}
+        {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of signals'}
     ]
     ports = {
-        'i0': {'direction':'input', 'description':'Input port'},
-        'i1': {'direction':'input', 'description':'Input port'},
-        'o0': {'direction':'output', 'description':'Output port'}
+        'i0': {'direction':'input', 'description':'Operand 0'},
+        'i1': {'direction':'input', 'description':'Operand 1'},
+        'o0': {'direction':'output', 'description':'Result'}
     }
     
 def unit_test():
@@ -22,14 +22,16 @@ def unit_test():
     w1 = iob_wire(name='w1', width=1, value=0)
     w2 = iob_wire(name='w2', width=1, value=0)
     
-    # Create module
+    width = 1
+    
+    # Create module variation and an instance
     or0 = iob_or(
         #module
-        module_suffix='_0',
-        description='OR gate bla bla bla',
+        module_suffix='_'+str(width),
+        description=f'2-input bit-wise OR gate with {width} bit operands and result',
         #instance
         instance_name = 'or0',
-        param_dict = {'W': 1},
+        param_dict = {'W': width},
         port_list = [
             {'name': 'i0', 'direction': 'input', 'connect_to': w0},
             {'name': 'i1', 'direction': 'input', 'connect_to': w1},

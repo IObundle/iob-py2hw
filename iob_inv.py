@@ -6,11 +6,11 @@ from iob_wire import iob_wire
 class iob_inv(iob_module):
     '''Class for the INV gate module'''
     params = [
-        {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of inputs'}
+        {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of signals'}
     ]
     ports = {
-        'i0': {'direction':'input', 'description':'Input port'},
-        'o0': {'direction':'output', 'description':'Output port'}
+        'i0': {'direction':'input', 'description':'Operand 0'},
+        'o0': {'direction':'output', 'description':'Result'}
     }
 def unit_test():
     """Unit test for iob_inv"""
@@ -18,15 +18,17 @@ def unit_test():
     # Create 2 wires
     w0 = iob_wire(name='w0', width=1, value=0)
     w1 = iob_wire(name='w1', width=1, value=0)
+
+    width = 1
     
-    # Create module
+    # Create module variation and an instance
     inv0 = iob_inv(
         #module
         module_suffix = '_0',
-        description = 'INV gate bla bla bla',
+        description = f'1-input bit-wise INV gate with {width} bit operand and result',
         #instance
         instance_name = 'inv0',
-        param_dict = {'W': 1},
+        param_dict = {'W': width},
         port_list = [
             {'name': 'i0', 'direction': 'input', 'connect_to': w0},
             {'name': 'o0', 'direction': 'output', 'connect_to': w1}
