@@ -115,10 +115,7 @@ class iob_module:
                 p.print_port_assign(comma=True)
         print(f"  );")
 
-
-# test this class
-if __name__ == "__main__":
-
+def unit_test():
     # Create 2 wires
     w0 = iob_wire(name='w0', width=3)
     w0.set_value('zzz')
@@ -143,3 +140,5 @@ if __name__ == "__main__":
     m0.print_verilog_module()
     m0.print_verilog_module_inst()
     
+if __name__ == "__main__":
+    unit_test()
