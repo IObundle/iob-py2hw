@@ -94,16 +94,22 @@ class iob_aoi(iob_module):
                 {'name': 'o0', 'direction': 'output', 'connect_to': self.o0}
             ]
         )
-        
 
+        self.assign_list = []
+            
 def unit_test():
     '''Unit test for AOI module'''
     # Create 5 wires
-    w0 = iob_wire(name='w0', width=2, value=0)
-    w1 = iob_wire(name='w1', width=2, value=0)
-    w2 = iob_wire(name='w2', width=2, value=0)
-    w3 = iob_wire(name='w3', width=2, value=0)
-    w4 = iob_wire(name='w4', width=2, value=0)
+    w0 = iob_wire(name='w0', width=2)
+    w0.set_value(1)
+    w1 = iob_wire(name='w1', width=2)
+    w1.set_value(1)
+    w2 = iob_wire(name='w2', width=2)
+    w2.set_value(1)
+    w3 = iob_wire(name='w3', width=2)
+    w3.set_value(1)
+    w4 = iob_wire(name='w4', width=2)
+    w4.set_value(1)
 
     width = 2
 

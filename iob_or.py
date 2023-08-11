@@ -13,14 +13,29 @@ class iob_or(iob_module):
         'i1': {'direction':'input', 'description':'Operand 1'},
         'o0': {'direction':'output', 'description':'Result'}
     }
+
+    def __init__(self, instance_name, port_list, param_dict, module_suffix, description):
+        super().__init__(
+            instance_name = instance_name,
+            port_list = port_list,
+            param_dict = param_dict,
+            module_suffix = module_suffix,
+            description = description
+        )
+        self.assign_list = []
+        self.create_assign(self.o0, 'self.i0 | self.i1')
+    
     
 def unit_test():
     """Unit test for iob_or"""
 
     # Create 3 wires
-    w0 = iob_wire(name='w0', width=1, value=0)
-    w1 = iob_wire(name='w1', width=1, value=0)
-    w2 = iob_wire(name='w2', width=1, value=0)
+    w0 = iob_wire(name='w0', width=1)
+    w0.set_value(0)
+    w1 = iob_wire(name='w1', width=1)
+    w1.set_value(0)
+    w2 = iob_wire(name='w2', width=1)
+    w2.set_value(0)
     
     width = 1
     

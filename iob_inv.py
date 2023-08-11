@@ -12,19 +12,33 @@ class iob_inv(iob_module):
         'i0': {'direction':'input', 'description':'Operand 0'},
         'o0': {'direction':'output', 'description':'Result'}
     }
+
+    def __init__(self, instance_name, port_list, param_dict, module_suffix, description):
+        super().__init__(
+            instance_name = instance_name,
+            port_list = port_list,
+            param_dict = param_dict,
+            module_suffix = module_suffix,
+            description = description
+        )
+        self.assign_list = []
+        self.create_assign(self.o0, '~self.i0')
+        
 def unit_test():
     """Unit test for iob_inv"""
 
     # Create 2 wires
-    w0 = iob_wire(name='w0', width=1, value=0)
-    w1 = iob_wire(name='w1', width=1, value=0)
+    w0 = iob_wire(name='w0', width=1)
+    w0.set_value(0)
+    w1 = iob_wire(name='w1', width=1)
+    w1.set_value('x')
 
     width = 1
     
     # Create module variation and an instance
     inv0 = iob_inv(
         #module
-        module_suffix = '_0',
+        module_suffix = '_' + str(width),
         description = f'1-input bit-wise INV gate with {width} bit operand and result',
         #instance
         instance_name = 'inv0',
