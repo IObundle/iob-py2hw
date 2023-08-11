@@ -13,6 +13,11 @@ class iob_or(iob_module):
         'i1': {'direction':'input', 'description':'Operand 1'},
         'o0': {'direction':'output', 'description':'Result'}
     }
+
+    def __init__(self, instance_name, port_list, param_dict, module_suffix, description):
+        super().__init__(instance_name, port_list, param_dict, module_suffix, description)
+        self.create_assign(self.o0, 'self.i0 | self.i1')
+    
     
 def unit_test():
     """Unit test for iob_or"""
