@@ -5,6 +5,11 @@ class iob_datum:
         self.width = width
         self.value = value
 
+    def __invert__(self):
+        """Invert the wire"""
+        result = ~self.value
+        return result
+    
 def unit_test():
     """Unit test for iob_datum"""
     

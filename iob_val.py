@@ -12,11 +12,24 @@ class iob_val:
                 if value < -(2**(width-1)):
                     raise ValueError(f'Value {value} is out of range for width {width}')
                 value = 2**width + value
+                # convert to binary and pad with 1s to width
+                value = bin(value)[2:]
+                value = '1' * (width - len(value)) + value
             elif value >= 2**width:
                 raise ValueError(f'Value {value} is out of range for width {width}')
-            value = bin(value)[2:]
+            else:
+                value = bin(value)[2:]
+                value = '0' * (width - len(value)) + value
         self.value = value
         self.width = width
+
+    def __eq__(self, other):
+        if isinstance(other, iob_val):
+            if self.width != other.width:
+                raise ValueError(f'Cannot compare values of different widths {self.width} and {other.width}')
+        else:
+            raise ValueError(f'Cannot compare iob_val and {type(other)}')
+        return self.value == other.value
                 
     def __invert__(self):
         result = ''
@@ -59,7 +72,8 @@ class iob_val:
                 result += '0'
             else:
                 result += 'x'
+        return iob_val(self.width, result)
 
     def __str__(self):
-        return f'{self.value}'
+        return f'{self.width}\'b{self.value}'
     
