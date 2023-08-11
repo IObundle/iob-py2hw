@@ -45,7 +45,7 @@ class iob_module:
 
     def create_assign(self, dest, expr):
         """Create an assignment statement"""
-        eval(expr)
+        dest.set_value(eval(expr))
         expr = expr.replace('self.', '')
         assign = f'assign {dest} = {expr};'
         self.assign_list.append(assign)

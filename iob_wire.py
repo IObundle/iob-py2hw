@@ -26,6 +26,11 @@ class iob_wire:
             else:
                 value = bin(value)[2:]
                 value = '0' * (self.width - len(value)) + value
+        # if value is boolean convert to string and check self.width = 1
+        elif isinstance(value, bool):
+            if self.width != 1:
+                raise ValueError(f'Value {value} is not the correct width {self.width}')
+            value = '1' if value else '0'
         self.value = value
 
     def get_value(self):
