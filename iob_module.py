@@ -1,6 +1,5 @@
 from iob_port import iob_port
 from iob_wire import iob_wire
-from iob_val import iob_val
 
 class iob_module:
     """Class to represent a Verilog module"""
@@ -11,7 +10,7 @@ class iob_module:
         'a0': {'direction':'input', 'description':'Input port'},
         'o0': {'direction':'output', 'description':'Output port'}
     }
-    def __init__(self, instance_name, port_list, param_dict, module_suffix, description, inst_list=[]):
+    def __init__(self, instance_name, port_list, param_dict, module_suffix, description, inst_list=[], assign_list=[]):
         self.instance_name = instance_name
         self.module_suffix = module_suffix
         self.description = description
@@ -23,6 +22,7 @@ class iob_module:
             port = self.create_port(p['name'], width, p['direction'])
             port.connect(p['connect_to'])
         self.inst_list = inst_list
+        self.assign_list = assign_list
 
     def create_wire(self, name, width, value):
         """Create a wire"""
@@ -43,12 +43,12 @@ class iob_module:
         self.inst_list.append(inst)
         return inst
 
-    def eval_expr(self, expr):
-        print(eval(expr))
-
     def create_assign(self, dest, expr):
         """Create an assignment statement"""
-        assign = iob_assign(dest, expr)
+        eval(expr)
+        expr = expr.replace('self.', '')
+        assign = f'assign {dest} = {expr};'
+        self.assign_list.append(assign)
         return assign
 
     @classmethod
@@ -93,9 +93,12 @@ class iob_module:
             else:
                 p.print_port(comma=True)
         print(f"  );")
-        wire_list = [attr for attr in vars(self).values() if isinstance(attr, iob_wire)]
+        wire_list = [attr for attr in vars(self).values() if (isinstance(attr, iob_wire) and not isinstance(attr, iob_port))]
         for w in wire_list:
             w.print_wire()
+
+        for a in self.assign_list:
+            print(a)
 
         for i in self.inst_list:
             i.print_verilog_module_inst()

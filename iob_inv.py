@@ -12,6 +12,11 @@ class iob_inv(iob_module):
         'i0': {'direction':'input', 'description':'Operand 0'},
         'o0': {'direction':'output', 'description':'Result'}
     }
+
+    def __init__(self, instance_name, port_list, param_dict, module_suffix, description):
+        super().__init__(instance_name, port_list, param_dict, module_suffix, description)
+        self.create_assign(self.o0, '~self.i0')
+        
 def unit_test():
     """Unit test for iob_inv"""
 
