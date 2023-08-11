@@ -45,9 +45,6 @@ class iob_port(iob_wire):
         else:
             print(f"      .{self.name}({self.value.name})")
 
-    def __str__(self):
-        return f'{self.name}'
-
 def unit_test():
     """Unit test for iob_port"""
     
