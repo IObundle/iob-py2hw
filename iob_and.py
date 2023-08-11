@@ -15,7 +15,14 @@ class iob_and(iob_module):
     }
     
     def __init__(self, instance_name, port_list, param_dict, module_suffix, description):
-        super().__init__(instance_name, port_list, param_dict, module_suffix, description)
+        super().__init__(
+            instance_name = instance_name,
+            port_list = port_list,
+            param_dict = param_dict,
+            module_suffix = module_suffix,
+            description = description
+        )
+        self.assign_list = []
         self.create_assign(self.o0, 'self.i0 & self.i1')
 
 def unit_test():

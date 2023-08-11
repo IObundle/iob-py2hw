@@ -94,8 +94,9 @@ class iob_aoi(iob_module):
                 {'name': 'o0', 'direction': 'output', 'connect_to': self.o0}
             ]
         )
-        
 
+        self.assign_list = []
+            
 def unit_test():
     '''Unit test for AOI module'''
     # Create 5 wires
