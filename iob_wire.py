@@ -34,6 +34,59 @@ class iob_wire:
     def print_wire(self):
         print(f"wire [{self.width}-1:0] {self.name};")
 
+    # Comparison operators
+    def __eq__(self, other):
+        if isinstance(other, iob_wire):
+            if self.width != other.width:
+                raise ValueError(f'Cannot compare wires of different widths {self.width} and {other.width}')
+        else:
+            raise ValueError(f'Cannot compare iob_wire and {type(other)}')
+        return self.get_value() == other.get_value()
+
+    # Bitwise operators
+    def __invert__(self):
+        result = ''
+        for c in self.get_value():
+            if c == '0':
+                result += '1'
+            elif c == '1':
+                result += '0'
+            else:
+                result += 'x'
+        return result
+
+    def __and__(self, other):
+        if isinstance(other, iob_wire):
+            if self.width != other.width:
+                raise ValueError(f'Cannot AND wires of different widths {self.width} and {other.width}')
+        else:
+            raise ValueError(f'Cannot AND iob_wire and {type(other)}')
+        result = ''
+        for i in range(self.width):
+            if self.get_value()[i] == '1' and other.get_value()[i] == '1':
+                result += '1'
+            elif self.get_value()[i] == '0' or other.get_value()[i] == '0':
+                result += '0'
+            else:
+                result += 'x'
+        return result
+
+    def __or__(self, other):
+        if isinstance(other, iob_wire):
+            if self.width != other.width:
+                raise ValueError(f'Cannot OR wires of different widths {self.width} and {other.width}')
+        else:
+            raise ValueError(f'Cannot OR iob_wire and {type(other)}')
+        result = ''
+        for i in range(self.width):
+            if self.get_value()[i] == '1' or other.get_value()[i] == '1':
+                result += '1'
+            elif self.get_value()[i] == '0' and other.get_value()[i] == '0':
+                result += '0'
+            else:
+                result += 'x'
+        return result
+
     def __str__(self):
         return f'{self.name}'
 
