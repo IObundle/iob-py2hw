@@ -18,9 +18,12 @@ def unit_test():
     """Unit test for iob_or"""
 
     # Create 3 wires
-    w0 = iob_wire(name='w0', width=1, value=0)
-    w1 = iob_wire(name='w1', width=1, value=0)
-    w2 = iob_wire(name='w2', width=1, value=0)
+    w0 = iob_wire(name='w0', width=1)
+    w0.set_value(0)
+    w1 = iob_wire(name='w1', width=1)
+    w1.set_value(0)
+    w2 = iob_wire(name='w2', width=1)
+    w2.set_value(0)
     
     width = 1
     

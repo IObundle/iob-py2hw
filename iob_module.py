@@ -1,5 +1,6 @@
 from iob_port import iob_port
 from iob_wire import iob_wire
+from iob_val import iob_val
 
 class iob_module:
     """Class to represent a Verilog module"""
@@ -10,7 +11,7 @@ class iob_module:
         'a0': {'direction':'input', 'description':'Input port'},
         'o0': {'direction':'output', 'description':'Output port'}
     }
-    def __init__(self, instance_name, port_list, param_dict, module_suffix, description, wire_list=[], inst_list=[]):
+    def __init__(self, instance_name, port_list, param_dict, module_suffix, description, inst_list=[]):
         self.instance_name = instance_name
         self.module_suffix = module_suffix
         self.description = description
@@ -21,14 +22,13 @@ class iob_module:
             width = param_dict['W']
             port = self.create_port(p['name'], width, p['direction'])
             port.connect(p['connect_to'])
-
-        self.wire_list = wire_list
         self.inst_list = inst_list
 
     def create_wire(self, name, width, value):
         """Create a wire"""
-        wire = iob_wire(name, width, value)
-        self.wire_list.append(wire)
+        wire = iob_wire(name=name, width=width)
+        wire.set_value(value)
+        setattr(self, name, wire)
         return wire
 
     def create_port(self, name, width, direction):
@@ -42,6 +42,14 @@ class iob_module:
         inst = module(instance_name, port_list, param_dict, module_suffix, description)
         self.inst_list.append(inst)
         return inst
+
+    def eval_expr(self, expr):
+        print(eval(expr))
+
+    def create_assign(self, dest, expr):
+        """Create an assignment statement"""
+        assign = iob_assign(dest, expr)
+        return assign
 
     @classmethod
     def check_ports(cls, ports):
@@ -85,7 +93,8 @@ class iob_module:
             else:
                 p.print_port(comma=True)
         print(f"  );")
-        for w in self.wire_list:
+        wire_list = [attr for attr in vars(self).values() if isinstance(attr, iob_wire)]
+        for w in wire_list:
             w.print_wire()
 
         for i in self.inst_list:
@@ -111,8 +120,10 @@ class iob_module:
 if __name__ == "__main__":
 
     # Create 2 wires
-    w0 = iob_wire(name='w0', width=1, value=0)
-    w1 = iob_wire(name='w1', width=1, value=0)
+    w0 = iob_wire(name='w0', width=3)
+    w0.set_value('zzz')
+    w1 = iob_wire(name='w1', width=3)
+    w1.set_value('xxx')
 
     # create module
     m0 = iob_module(
@@ -121,12 +132,13 @@ if __name__ == "__main__":
         description = "This is a test module",
         #instance
         instance_name = 'm0',
-        param_dict = {'W': 1},
+        param_dict = {'W': 3},
         port_list = [
             {'name': 'a0', 'direction': 'input', 'connect_to': w0},
             {'name': 'o0', 'direction': 'output', 'connect_to': w1}
         ]
     )
+    
                     
     m0.print_verilog_module()
     m0.print_verilog_module_inst()

@@ -15,6 +15,7 @@ def run_unit_tests():
             if hasattr(module, 'unit_test') and callable(module.unit_test):
                 print(f"Running unit tests for {module_name}")
                 module.unit_test()
+                print(f"Unit tests for {module_name} passed")
                 print()
 
 if __name__ == "__main__":

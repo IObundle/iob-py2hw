@@ -16,15 +16,17 @@ def unit_test():
     """Unit test for iob_inv"""
 
     # Create 2 wires
-    w0 = iob_wire(name='w0', width=1, value=0)
-    w1 = iob_wire(name='w1', width=1, value=0)
+    w0 = iob_wire(name='w0', width=1)
+    w0.set_value(0)
+    w1 = iob_wire(name='w1', width=1)
+    w1.set_value('x')
 
     width = 1
     
     # Create module variation and an instance
     inv0 = iob_inv(
         #module
-        module_suffix = '_0',
+        module_suffix = '_' + str(width),
         description = f'1-input bit-wise INV gate with {width} bit operand and result',
         #instance
         instance_name = 'inv0',
