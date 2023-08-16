@@ -10,7 +10,7 @@ class iob_module:
         'a0': {'direction':'input', 'description':'Input port'},
         'o0': {'direction':'output', 'description':'Output port'}
     }
-    assign_list = []
+    text_box = ""
     def __init__(self, instance_name, port_list, param_dict, module_suffix, description, inst_list=[], assign_list=[]):
         self.instance_name = instance_name
         self.module_suffix = module_suffix
@@ -104,8 +104,7 @@ class iob_module:
         for w in wire_list:
             w.print_wire()
 
-        for a in self.__class__.assign_list:
-            print(f'  assign {a};')
+        print(self.__class__.text_box)
 
         for i in self.inst_list:
             i.print_verilog_module_inst()
