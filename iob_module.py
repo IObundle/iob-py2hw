@@ -6,6 +6,7 @@ class iob_module:
     params = [
         {'name': 'W', 'min_value': 1, 'max_value': 32}
     ]
+    param_dict = {'W': '1'}
     ports = {
         'a0': {'direction':'input', 'description':'Input port'},
         'o0': {'direction':'output', 'description':'Output port'}
