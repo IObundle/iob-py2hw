@@ -3,12 +3,13 @@ from iob_wire import iob_wire
 class iob_port(iob_wire):
     """Class to represent a port in an iob module"""
 
-    def __init__(self, name, width, direction = "input"):
+    def __init__(self, name, width, direction = "input", is_var=False):
         super().__init__(name=name, width=width)
         if direction not in ["input", "output", "inout"]:
             print(f"Error: Direction must be 'input', 'output', or 'inout'.")
             exit(1)
         self.direction = direction
+        self.is_var = is_var
 
     def connect(self, value):
         """Connect a wire to the port"""
@@ -30,10 +31,14 @@ class iob_port(iob_wire):
         return self.value
         
     def print_port(self, comma=True):
-        if comma:
-            print(f"      {self.direction} [{self.width}-1:0] {self.name},")
+        if self.is_var:
+            direction = self.direction + " reg"
         else:
-            print(f"      {self.direction} [{self.width}-1:0] {self.name}")
+            direction = self.direction
+        if comma:
+            print(f"    {direction} [{self.width}-1:0] {self.name},")
+        else:
+            print(f"    {direction} [{self.width}-1:0] {self.name}")
 
         
     def print_port_assign(self, comma=True):
@@ -41,9 +46,9 @@ class iob_port(iob_wire):
             print(f"Error: Port {self.name} is not connected.")
             exit(1)
         if comma:
-            print(f"      .{self.name}({self.value.name}),")
+            print(f"    .{self.name}({self.value.name}),")
         else:
-            print(f"      .{self.name}({self.value.name})")
+            print(f"    .{self.name}({self.value.name})")
 
 def unit_test():
     """Unit test for iob_port"""
@@ -59,7 +64,7 @@ def unit_test():
     # Create 3 ports
     port0 = iob_port(name="port0", width=8, direction="input")
     port0.connect(wire0)
-    port1 = iob_port(name="port1", width=8, direction="output")
+    port1 = iob_port(name="port1", width=8, direction="output", is_var=True)
     port1.connect(wire1)
     port2 = iob_port(name="port2", width=8, direction="inout")
     port2.connect(wire2)
