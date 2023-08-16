@@ -13,7 +13,7 @@ class iob_and(iob_module):
         'i1': {'direction':'input', 'description':'Operand 1'},
         'o0': {'direction':'output', 'description':'Result'}
     }
-    text_box = "  o0 = i0 & i1"
+    text_box = "assign o0 = i0 & i1"
     
     def __init__(self, instance_name, port_list, param_dict, module_suffix, description):
         super().__init__(
