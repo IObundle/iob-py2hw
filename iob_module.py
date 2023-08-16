@@ -10,6 +10,7 @@ class iob_module:
         'a0': {'direction':'input', 'description':'Input port'},
         'o0': {'direction':'output', 'description':'Output port'}
     }
+    text_box = ""
     def __init__(self, instance_name, port_list, param_dict, module_suffix, description, inst_list=[], assign_list=[]):
         self.instance_name = instance_name
         self.module_suffix = module_suffix
@@ -42,14 +43,6 @@ class iob_module:
         inst = module(instance_name, port_list, param_dict, module_suffix, description)
         self.inst_list.append(inst)
         return inst
-
-    def create_assign(self, dest, expr):
-        """Create an assignment statement"""
-        dest.set_value(eval(expr))
-        expr = expr.replace('self.', '')
-        assign = f'assign {dest} = {expr};'
-        self.assign_list.append(assign)
-        return assign
 
     @classmethod
     def check_ports(cls, ports):
