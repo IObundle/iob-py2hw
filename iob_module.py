@@ -55,14 +55,6 @@ class iob_module:
             new_class = globals()[new_class_name]
         return new_class
 
-    def create_assign(self, dest, expr):
-        """Create an assignment statement"""
-        dest.set_value(eval(expr))
-        expr = expr.replace('self.', '')
-        assign = f'assign {dest} = {expr};'
-        self.assign_list.append(assign)
-        return assign
-
     @classmethod
     def check_ports(cls, ports):
         """Check if the ports are valid for the module"""    
