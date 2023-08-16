@@ -47,7 +47,12 @@ class iob_module:
     def create_submodule(self, param_dict):
         """Create a subclass representing a module variant"""
         new_class_name = self.__class__.__name__ + '_' + str(param_dict['W'])
-        new_class = type(new_class_name, (self.__class__,), {'params':param_dict})
+        if new_class_name not in globals():
+            new_class = type(new_class_name, (self.__class__,), {'params':param_dict})
+            globals()[new_class_name] = new_class
+            del globals()['new_class']
+        else:
+            new_class = globals()[new_class_name]
         return new_class
 
     def create_assign(self, dest, expr):
