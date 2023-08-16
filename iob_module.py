@@ -90,8 +90,7 @@ class iob_module:
         for w in wire_list:
             w.print_wire()
 
-        for a in self.assign_list:
-            print(a)
+        print(self.__class__.text_box)
 
         for i in self.inst_list:
             i.print_verilog_module_inst()
