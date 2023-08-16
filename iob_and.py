@@ -13,6 +13,7 @@ class iob_and(iob_module):
         'i1': {'direction':'input', 'description':'Operand 1'},
         'o0': {'direction':'output', 'description':'Result'}
     }
+    assign_list = ['o0 = i0 & i1']
     
     def __init__(self, instance_name, port_list, param_dict, module_suffix, description):
         super().__init__(
@@ -22,8 +23,6 @@ class iob_and(iob_module):
             module_suffix = module_suffix,
             description = description
         )
-        self.assign_list = []
-        self.create_assign(self.o0, 'self.i0 & self.i1')
 
 def unit_test():
     """Unit test for iob_and"""

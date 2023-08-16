@@ -10,6 +10,7 @@ class iob_module:
         'a0': {'direction':'input', 'description':'Input port'},
         'o0': {'direction':'output', 'description':'Output port'}
     }
+    assign_list = []
     def __init__(self, instance_name, port_list, param_dict, module_suffix, description, inst_list=[], assign_list=[]):
         self.instance_name = instance_name
         self.module_suffix = module_suffix
@@ -42,6 +43,12 @@ class iob_module:
         inst = module(instance_name, port_list, param_dict, module_suffix, description)
         self.inst_list.append(inst)
         return inst
+
+    def create_submodule(self, param_dict):
+        """Create a subclass representing a module variant"""
+        new_class_name = self.__class__.__name__ + '_' + str(param_dict['W'])
+        new_class = type(new_class_name, (self.__class__,), {'params':param_dict})
+        return new_class
 
     def create_assign(self, dest, expr):
         """Create an assignment statement"""
@@ -97,8 +104,8 @@ class iob_module:
         for w in wire_list:
             w.print_wire()
 
-        for a in self.assign_list:
-            print(a)
+        for a in self.__class__.assign_list:
+            print(f'  assign {a};')
 
         for i in self.inst_list:
             i.print_verilog_module_inst()
