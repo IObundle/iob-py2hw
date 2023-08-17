@@ -6,23 +6,36 @@ class iob_module:
     params = [
         {'name': 'W', 'min_value': 1, 'max_value': 32}
     ]
+    param_dict = {'W': 1}
     ports = {
-        'a0': {'direction':'input', 'description':'Input port'},
-        'o0': {'direction':'output', 'description':'Output port'}
+        'a0': {'direction':'input', 'width':'W', 'description':'Input port'},
+        'o0': {'direction':'output', 'width':'W', 'description':'Output port'}
     }
-    def __init__(self, instance_name, port_list, param_dict, module_suffix, description, inst_list=[], assign_list=[]):
+    wires = {} #{name:widht}
+    instances = {} #{name:{'module':module, 'port_map':port_map, 'description':'description'}}
+    assigns = {} #{dest: expr}
+    
+    def __init__(self, instance_name, port_map, description):
         self.instance_name = instance_name
-        self.module_suffix = module_suffix
         self.description = description
-        self.__class__.check_params(param_dict)
-        self.param_dict = param_dict
-        self.__class__.check_ports(port_list)
-        for p in port_list:
-            width = param_dict['W']
-            port = self.create_port(p['name'], width, p['direction'])
-            port.connect(p['connect_to'])
-        self.inst_list = inst_list
-        self.assign_list = assign_list
+        for name, info in self.__class__.ports.items():
+            if name not in port_map:
+                raise ValueError(f"Port {name} is missing")
+            if isinstance(info['width'],str):
+                info['width'] = self.__class__.param_dict[info['width']]
+            elif not isinstance(info['width'],int):
+                raise ValueError(f"Port {name} width is not valid")
+            port = self.create_port(name, info['width'], info['direction'])
+            port.connect(port_map[name])
+        for name, width in self.__class__.wires.items():
+            value = width * 'x'
+            wire = self.create_wire(name, width, value)
+        self.assign_list = []
+        for name, expr in self.__class__.assigns.items():
+            self.create_assign(name, expr)
+        self.inst_list = []
+        for name, info in self.__class__.instances.items():
+            inst = self.create_instance(info['module'], name, info['port_map'], info['description'])
 
     def create_wire(self, name, width, value):
         """Create a wire"""
@@ -37,9 +50,9 @@ class iob_module:
         setattr(self, name, port)
         return port
 
-    def create_instance(self, module, instance_name, port_list, param_dict, module_suffix, description):
+    def create_instance(self, module, instance_name, port_map, description):
         """Create an instance of a module"""
-        inst = module(instance_name, port_list, param_dict, module_suffix, description)
+        inst = module(instance_name, port_map, description)
         self.inst_list.append(inst)
         return inst
 
@@ -50,21 +63,6 @@ class iob_module:
         assign = f'assign {dest} = {expr};'
         self.assign_list.append(assign)
         return assign
-
-    @classmethod
-    def check_ports(cls, ports):
-        """Check if the ports are valid for the module"""    
-        # Check number of ports
-        if len(ports) != len(cls.ports):
-            raise ValueError(f"Wrong number of ports")
-        # Check port names and direction
-        for p in ports:
-        # Check if port exists
-            if p['name'] not in cls.ports:
-                raise ValueError(f"Port {p['name']} is not valid for {cls.__name__}")
-        # Check port direction
-            if cls.ports[p['name']]['direction'] != p['direction']:
-                raise ValueError(f"Port {p['name']} has wrong direction")
             
     @classmethod
     def check_params(cls, params):
@@ -82,7 +80,7 @@ class iob_module:
                 raise ValueError(f"Param {p} is not valid for {cls.__name__}")
             
     def print_verilog_module(self):
-        print(f"module {self.__class__.__name__}{self.module_suffix}")
+        print(f"module {self.__class__.__name__}")
         print(f"  (")
         # Filter attributes of type iob_port using vars() using list comprehention
         port_list = [attr for attr in vars(self).values() if isinstance(attr, iob_port)]
@@ -106,7 +104,7 @@ class iob_module:
         print(f"endmodule")
 
     def print_verilog_module_inst(self):
-        print(f"{self.__class__.__name__}{self.module_suffix} {self.instance_name}")
+        print(f"{self.__class__.__name__} {self.instance_name}")
         print(f"  (")
         # Filter attributes of type iob_port using vars() using list comprehention
         port_list = [attr for attr in vars(self).values() if isinstance(attr, iob_port)]
@@ -120,25 +118,22 @@ class iob_module:
 
 def unit_test():
     # Create 2 wires
-    w0 = iob_wire(name='w0', width=3)
-    w0.set_value('zzz')
-    w1 = iob_wire(name='w1', width=3)
-    w1.set_value('xxx')
+    w0 = iob_wire(name='w0', width=1)
+    w0.set_value('z')
+    w1 = iob_wire(name='w1', width=1)
+    w1.set_value('x')
 
     # create module
     m0 = iob_module(
         #module
-        module_suffix = "_suffix",
         description = "This is a test module",
         #instance
         instance_name = 'm0',
-        param_dict = {'W': 3},
-        port_list = [
-            {'name': 'a0', 'direction': 'input', 'connect_to': w0},
-            {'name': 'o0', 'direction': 'output', 'connect_to': w1}
-        ]
+        port_map = {
+            'a0': w0,
+            'o0': w1
+        },
     )
-    
                     
     m0.print_verilog_module()
     m0.print_verilog_module_inst()
