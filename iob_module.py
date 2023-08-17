@@ -58,7 +58,7 @@ class iob_module:
     def create_assign(self, dest, expr):
         """Create an assignment statement"""
         assign = f'assign {dest} = {expr};'
-        value_list = [attr for attr in vars(self).values() if (isinstance(attr, iob_wire)]
+        value_list = [attr for attr in vars(self).values() if isinstance(attr, iob_wire)]
         for v in value_list: 
             expr = expr.replace(v.name, f'self.{v.name}')
             dest = dest.replace(v.name, f'self.{v.name}')
