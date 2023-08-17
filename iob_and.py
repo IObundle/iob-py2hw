@@ -8,49 +8,46 @@ class iob_and(iob_module):
     params = [
         {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of signals'}
     ]
+    param_dict = {'W': 1}
     ports = {
-        'i0': {'direction':'input', 'description':'Operand 0'},
-        'i1': {'direction':'input', 'description':'Operand 1'},
-        'o0': {'direction':'output', 'description':'Result'}
+        'i0': {'direction':'input', 'width': 'W', 'description':'Operand 0'},
+        'i1': {'direction':'input', 'width': 'W', 'description':'Operand 1'},
+        'o0': {'direction':'output', 'width': 'W', 'description':'Result'}
     }
+    wires = {} #{name:widht}
+    instances = {} #{name:{'module':module, 'port_map':port_map, 'description':'description'}}
+    assigns = {'o0':'i0 & i1'} #{dest: expr}
     
-    def __init__(self, instance_name, port_list, param_dict, module_suffix, description):
+    def __init__(self, instance_name, port_map, description):
         super().__init__(
             instance_name = instance_name,
-            port_list = port_list,
-            param_dict = param_dict,
-            module_suffix = module_suffix,
+            port_map = port_map,
             description = description
         )
-        self.assign_list = []
-        self.create_assign(self.o0, 'self.i0 & self.i1')
 
 def unit_test():
     """Unit test for iob_and"""
 
-    # Create 3 wires
-    w0 = iob_wire(name='w0', width=10)
-    w0.set_value(0)
-    w1 = iob_wire(name='w1', width=10)
-    w1.set_value(0)
-    w2 = iob_wire(name='w2', width=10)
-    w2.set_value(0)
-
-    width = 10
+    width = 6
     
-    # Create module variation and an instance
-    and0 = iob_and(
-        #module
-        module_suffix='_'+str(width),
+    # Create 3 wires
+    w0 = iob_wire(name='w0', width=width)
+    w0.set_value(0)
+    w1 = iob_wire(name='w1', width=width)
+    w1.set_value(0)
+    w2 = iob_wire(name='w2', width=width)
+
+    iob_and_6 = type(f'iob_and_{width}', (iob_and,), {'param_dict':{'W':width}})
+    
+    # Create an instance
+    and0 = iob_and_6(
         description=f'2-input bit-wise AND gate with {width} bit operands and result',
-        #instance 
         instance_name = 'and0',
-        param_dict = {'W': width},
-        port_list = [
-            {'name': 'i0', 'direction': 'input', 'connect_to': w0},
-            {'name': 'i1', 'direction': 'input', 'connect_to': w1},
-            {'name': 'o0', 'direction': 'output', 'connect_to': w2}
-        ]
+        port_map = {
+            'i0': w0, 
+            'i1': w1,
+            'o0': w2
+        }
     )
                             
     and0.print_verilog_module()
