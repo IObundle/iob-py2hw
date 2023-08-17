@@ -18,13 +18,6 @@ class iob_and(iob_module):
     instances = {} #{name:{'module':module, 'port_map':port_map, 'description':'description'}}
     assigns = {'o0':'i0 & i1'} #{dest: expr}
     
-    def __init__(self, instance_name, port_map, description):
-        super().__init__(
-            instance_name = instance_name,
-            port_map = port_map,
-            description = description
-        )
-
 def unit_test():
     """Unit test for iob_and"""
 
