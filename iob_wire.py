@@ -36,8 +36,8 @@ class iob_wire:
     def get_value(self):
         return self.value
 
-    def print_wire(self):
-        print(f"wire [{self.width}-1:0] {self.name};")
+    def print_verilog(self):
+        print(f"  wire [{self.width}-1:0] {self.name};")
 
     # Comparison operators
     def __eq__(self, other):
@@ -105,7 +105,7 @@ def unit_test():
     assert wire0.width == 8
     assert wire0.value == '00010001'
     
-    wire0.print_wire()
+    wire0.print_verilog()
             
 # Test the class
 if __name__ == "__main__":

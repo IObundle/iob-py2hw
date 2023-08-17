@@ -3,7 +3,7 @@ from iob_wire import iob_wire
 class iob_var(iob_wire):
     """Class for a verilog variable"""
     
-    def print_var(self):
+    def print_verilog(self):
         print(f"  reg [{self.width}-1:0] {self.name};")
 
 def unit_test():
@@ -16,7 +16,7 @@ def unit_test():
     assert var0.width == 8
     assert var0.value == '00010001'
 
-    var0.print_var()
+    var0.print_verilog()
 
 # Test the class
 if __name__ == "__main__":

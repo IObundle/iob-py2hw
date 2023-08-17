@@ -83,13 +83,13 @@ class iob_module:
         for p in port_list:
             #test if the last element
             if p == port_list[-1]:
-                p.print_port(comma=False)
+                p.print_verilog(comma=False)
             else:
-                p.print_port(comma=True)
+                p.print_verilog(comma=True)
         print(f"  );")
         wire_list = [attr for attr in vars(self).values() if (isinstance(attr, iob_wire) and not isinstance(attr, iob_port))]
         for w in wire_list:
-            w.print_wire()
+            w.print_verilog()
 
         print(self.__class__.text_box)
 
@@ -106,9 +106,9 @@ class iob_module:
         for p in port_list:
             #test if the last element
             if p == port_list[-1]:
-                p.print_port_assign(comma=False)
+                p.print_verilog_assign(comma=False)
             else:
-                p.print_port_assign(comma=True)
+                p.print_verilog_assign(comma=True)
         print(f"  );")
 
 def unit_test():

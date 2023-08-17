@@ -30,7 +30,7 @@ class iob_port(iob_wire):
         """Return the wire connected to the port"""
         return self.value
         
-    def print_port(self, comma=True):
+    def print_verilog(self, comma=True):
         if self.is_var:
             direction = self.direction + " reg"
         else:
@@ -41,7 +41,7 @@ class iob_port(iob_wire):
             print(f"    {direction} [{self.width}-1:0] {self.name}")
 
         
-    def print_port_assign(self, comma=True):
+    def print_verilog_assign(self, comma=True):
         if not isinstance(self.value, (iob_wire, iob_port)):
             print(f"Error: Port {self.name} is not connected.")
             exit(1)
@@ -102,13 +102,13 @@ def unit_test():
     assert (port1 == port1) == True
     assert (port1 & port2) == '00101000'
 
-    port0.print_port()
-    port1.print_port()
-    port2.print_port()
+    port0.print_verilog()
+    port1.print_verilog()
+    port2.print_verilog()
 
-    port0.print_port_assign()
-    port1.print_port_assign()
-    port2.print_port_assign()
+    port0.print_verilog_assign()
+    port1.print_verilog_assign()
+    port2.print_verilog_assign()
     
 # Test code
 if __name__ == "__main__":
