@@ -28,8 +28,7 @@ class iob_module:
             port = self.create_port(name, info['width'], info['direction'])
             port.connect(port_map[name])
         for name, width in self.__class__.wires.items():
-            value = width * 'x'
-            wire = self.create_wire(name, width, value)
+            wire = self.create_wire(name, width)
         self.assign_list = []
         for name, expr in self.__class__.assigns.items():
             self.create_assign(name, expr)
