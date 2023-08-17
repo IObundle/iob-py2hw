@@ -22,12 +22,20 @@ class iob_module:
             if name not in port_map:
                 raise ValueError(f"Port {name} is missing")
             if isinstance(info['width'],str):
-                info['width'] = self.__class__.param_dict[info['width']]
+                width = self.__class__.param_dict[info['width']]
             elif not isinstance(info['width'],int):
                 raise ValueError(f"Port {name} width is not valid")
-            port = self.create_port(name, info['width'], info['direction'])
+            else:
+                width = info['width']
+            port = self.create_port(name, width, info['direction'])
             port.connect(port_map[name])
-        for name, width in self.__class__.wires.items():
+        for name, w in self.__class__.wires.items():
+            if isinstance(width,str):
+                width = self.__class__.param_dict[w]
+            elif not isinstance(width,int):
+                raise ValueError(f"Wire {name} width is not valid")
+            else:
+                width = w
             wire = self.create_wire(name, width)
         self.assign_list = []
         for name, expr in self.__class__.assigns.items():
