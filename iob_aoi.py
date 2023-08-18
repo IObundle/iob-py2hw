@@ -69,7 +69,10 @@ def create_subclass(cls,param_dict):
     new_instances = copy.deepcopy(cls.instances)
     for instance in new_instances:
         new_instances[instance]['module'] = create_subclass(new_instances[instance]['module'],param_dict)
-    new_class = type(f"{cls.__name__}_{param_dict['W']}", (cls,), {'param_dict': param_dict, 'instances': new_instances})
+    new_class = type(f"{cls.__name__}_{param_dict['W']}", (cls,), 
+                     {'param_dict': param_dict,
+                      'instances': new_instances,
+                      'description': f"AOI module with {param_dict['W']}-bit operands and result"})
     # Change the name of the class in globals
     globals()["{cls.__name__}_{param_dict['W']"] = new_class
     return new_class
