@@ -1,5 +1,6 @@
 from iob_port import iob_port
 from iob_wire import iob_wire
+import copy
 
 class iob_module:
     """Class to represent a Verilog module"""
@@ -14,6 +15,7 @@ class iob_module:
     wires = {} #{name:widht}
     instances = {} #{name:{'module':module, 'port_map':port_map, 'description':'description'}}
     assigns = {} #{dest: expr}
+    description = "Default module description"
     
     def __init__(self, instance_name, port_map, description):
         self.instance_name = instance_name
@@ -30,9 +32,9 @@ class iob_module:
             port = self.create_port(name, width, info['direction'])
             port.connect(port_map[name])
         for name, w in self.__class__.wires.items():
-            if isinstance(width,str):
+            if isinstance(w,str):
                 width = self.__class__.param_dict[w]
-            elif not isinstance(width,int):
+            elif not isinstance(w,int):
                 raise ValueError(f"Wire {name} width is not valid")
             else:
                 width = w
@@ -42,12 +44,15 @@ class iob_module:
             self.create_assign(name, expr)
         self.inst_list = []
         for name, info in self.__class__.instances.items():
-            inst = self.create_instance(info['module'], name, info['port_map'], info['description'])
+            port_map = copy.deepcopy(info['port_map'])
+            for p in port_map:
+                if isinstance(port_map[p],str):
+                    port_map[p] = getattr(self, port_map[p])
+            inst = self.create_instance(info['module'], name, port_map, info['description'])
 
-    def create_wire(self, name, width, value):
+    def create_wire(self, name, width):
         """Create a wire"""
         wire = iob_wire(name=name, width=width)
-        wire.set_value(value)
         setattr(self, name, wire)
         return wire
 
@@ -124,7 +129,7 @@ class iob_module:
             else:
                 p.print_port_assign(comma=True)
         print(f"  );")
-
+    
 def unit_test():
     # Create 2 wires
     w0 = iob_wire(name='w0', width=1)
