@@ -8,24 +8,15 @@ class iob_or(iob_module):
     params = [
         {'name': 'W', 'min_value': 1, 'max_value': 32, 'description': 'Bit width of signals'}
     ]
+    param_dict = {'W': 1}
     ports = {
-        'i0': {'direction':'input', 'description':'Operand 0'},
-        'i1': {'direction':'input', 'description':'Operand 1'},
-        'o0': {'direction':'output', 'description':'Result'}
+        'i0': {'direction':'input', 'width': 'W', 'description':'Operand 0'},
+        'i1': {'direction':'input', 'width': 'W', 'description':'Operand 1'},
+        'o0': {'direction':'output', 'width': 'W', 'description':'Result'}
     }
+    assigns = {'o0':'i0 | i1'} #{dest: expr}
+    descriprion = "General bit-wise OR gate with default 1-bit operands and result"
 
-    def __init__(self, instance_name, port_list, param_dict, module_suffix, description):
-        super().__init__(
-            instance_name = instance_name,
-            port_list = port_list,
-            param_dict = param_dict,
-            module_suffix = module_suffix,
-            description = description
-        )
-        self.assign_list = []
-        self.create_assign(self.o0, 'self.i0 | self.i1')
-    
-    
 def unit_test():
     """Unit test for iob_or"""
 
@@ -42,16 +33,14 @@ def unit_test():
     # Create module variation and an instance
     or0 = iob_or(
         #module
-        module_suffix='_'+str(width),
         description=f'2-input bit-wise OR gate with {width} bit operands and result',
         #instance
         instance_name = 'or0',
-        param_dict = {'W': width},
-        port_list = [
-            {'name': 'i0', 'direction': 'input', 'connect_to': w0},
-            {'name': 'i1', 'direction': 'input', 'connect_to': w1},
-            {'name': 'o0', 'direction': 'output', 'connect_to': w1}
-        ]
+        port_map = {
+            'i0': w0,
+            'i1': w1,
+            'o0': w2
+        }
     )                        
     
     or0.print_verilog_module()

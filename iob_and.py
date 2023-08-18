@@ -14,9 +14,8 @@ class iob_and(iob_module):
         'i1': {'direction':'input', 'width': 'W', 'description':'Operand 1'},
         'o0': {'direction':'output', 'width': 'W', 'description':'Result'}
     }
-    wires = {} #{name:widht}
-    instances = {} #{name:{'module':module, 'port_map':port_map, 'description':'description'}}
     assigns = {'o0':'i0 & i1'} #{dest: expr}
+    descriprion = "General bit-wise AND gate with default 1-bit operands and result"
     
 def unit_test():
     """Unit test for iob_and"""
@@ -30,7 +29,9 @@ def unit_test():
     w1.set_value(0)
     w2 = iob_wire(name='w2', width=width)
 
-    iob_and_6 = type(f'iob_and_{width}', (iob_and,), {'param_dict':{'W':width}})
+    iob_and_6 = type(f'iob_and_{width}', (iob_and,), 
+                     {'param_dict':{'W':width},
+                      'descriprion':f'2-input bit-wise AND gate with {width} bit operands and result'})
     
     # Create an instance
     and0 = iob_and_6(
