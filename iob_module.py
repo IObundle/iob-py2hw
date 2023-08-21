@@ -77,6 +77,28 @@ class iob_module:
         getattr(self, dest).set_value(eval(expr))
         self.assign_list.append(assign)
         return assign
+
+    @classmethod
+    def new_instance(cls, param_dict, instance_name, port_map, description):
+        """Create a new instance of the module and the necessary subclasses"""
+        new_class = cls.create_subclass(param_dict)
+        inst = new_class(instance_name=instance_name, port_map=port_map, description=description)
+        return inst
+
+    @classmethod
+    def create_subclass(cls, param_dict):
+        new_instances = copy.deepcopy(cls.instances)
+        for instance in new_instances:
+            new_instances[instance]['module'] = cls.instances[instance]['module'].create_subclass(param_dict)
+        new_class = type(f"{cls.__name__}_{param_dict['W']}", (cls,), 
+                         {'param_dict': param_dict,
+                          'instances': new_instances,
+                          'description': f"{cls.__name__} module with {param_dict['W']}-bit operands and result"})
+        # Change the name of the class in globals
+        globals()[f"{cls.__name__}_{param_dict['W']}"] = new_class
+        return new_class
+        
+    
             
     @classmethod
     def check_params(cls, params):

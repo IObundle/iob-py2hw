@@ -1,11 +1,6 @@
 from iob_and import iob_and
 from iob_wire import iob_wire
 
-class iob_and_6(iob_and):
-    '''Class for the AND gate module with 6-bit operands and result'''
-    param_dict = {'W': 6}
-    descriprion = "2-input bit-wise AND gate with 6-bit operands and result"
-    
 def unit_test():
     """Unit test for iob_and"""
 
@@ -19,8 +14,9 @@ def unit_test():
     w2 = iob_wire(name='w2', width=width)
 
     # Create an instance
-    and0 = iob_and_6(
+    and0 = iob_and.new_instance(
         description=f'2-input bit-wise AND gate with {width} bit operands and result',
+        param_dict={'W': width},
         instance_name = 'and0',
         port_map = {
             'i0': w0, 

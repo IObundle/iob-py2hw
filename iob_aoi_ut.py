@@ -2,19 +2,6 @@ from iob_aoi import iob_aoi
 from iob_wire import iob_wire
 import copy
 
-def create_subclass(cls,param_dict):
-    """Create subclass of the AOI module"""
-    new_instances = copy.deepcopy(cls.instances)
-    for instance in new_instances:
-        new_instances[instance]['module'] = create_subclass(new_instances[instance]['module'],param_dict)
-    new_class = type(f"{cls.__name__}_{param_dict['W']}", (cls,), 
-                     {'param_dict': param_dict,
-                      'instances': new_instances,
-                      'description': f"AOI module with {param_dict['W']}-bit operands and result"})
-    # Change the name of the class in globals
-    globals()[f"{cls.__name__}_{param_dict['W']}"] = new_class
-    return new_class
-        
 def unit_test():
     '''Unit test for AOI module'''
     width = 2
@@ -31,11 +18,10 @@ def unit_test():
     w4 = iob_wire(name='w4', width=width)
     w4.set_value(1)
 
-    module = create_subclass(iob_aoi, {'W': width})
-
     # Create module
-    aoi0 = module(
+    aoi0 = iob_aoi.new_instance(
         description = f'AOI module for {width}-bit operands',
+        param_dict = {'W': width},
         instance_name = 'aoi0',
         port_map = {
             'i0': w0,
