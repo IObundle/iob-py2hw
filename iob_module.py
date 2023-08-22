@@ -1,5 +1,6 @@
 from iob_port import iob_port
 from iob_wire import iob_wire
+import copy
 
 class iob_module:
     """Class to represent a Verilog module"""
@@ -14,6 +15,7 @@ class iob_module:
     wires = {} #{name:widht}
     instances = {} #{name:{'module':module, 'port_map':port_map, 'description':'description'}}
     assigns = {} #{dest: expr}
+    description = "Default module description"
     
     def __init__(self, instance_name, port_map, description):
         self.instance_name = instance_name
@@ -30,9 +32,9 @@ class iob_module:
             port = self.create_port(name, width, info['direction'])
             port.connect(port_map[name])
         for name, w in self.__class__.wires.items():
-            if isinstance(width,str):
+            if isinstance(w,str):
                 width = self.__class__.param_dict[w]
-            elif not isinstance(width,int):
+            elif not isinstance(w,int):
                 raise ValueError(f"Wire {name} width is not valid")
             else:
                 width = w
@@ -42,12 +44,15 @@ class iob_module:
             self.create_assign(name, expr)
         self.inst_list = []
         for name, info in self.__class__.instances.items():
-            inst = self.create_instance(info['module'], name, info['port_map'], info['description'])
+            port_map = copy.deepcopy(info['port_map'])
+            for p in port_map:
+                if isinstance(port_map[p],str):
+                    port_map[p] = getattr(self, port_map[p])
+            inst = self.create_instance(info['module'], name, port_map, info['description'])
 
-    def create_wire(self, name, width, value):
+    def create_wire(self, name, width):
         """Create a wire"""
         wire = iob_wire(name=name, width=width)
-        wire.set_value(value)
         setattr(self, name, wire)
         return wire
 
@@ -72,6 +77,28 @@ class iob_module:
         getattr(self, dest).set_value(eval(expr))
         self.assign_list.append(assign)
         return assign
+
+    @classmethod
+    def new_instance(cls, param_dict, instance_name, port_map, description):
+        """Create a new instance of the module and the necessary subclasses"""
+        new_class = cls.create_subclass(param_dict)
+        inst = new_class(instance_name=instance_name, port_map=port_map, description=description)
+        return inst
+
+    @classmethod
+    def create_subclass(cls, param_dict):
+        new_instances = copy.deepcopy(cls.instances)
+        for instance in new_instances:
+            new_instances[instance]['module'] = cls.instances[instance]['module'].create_subclass(param_dict)
+        new_class = type(f"{cls.__name__}_{param_dict['W']}", (cls,), 
+                         {'param_dict': param_dict,
+                          'instances': new_instances,
+                          'description': f"{cls.__name__} module with {param_dict['W']}-bit operands and result"})
+        # Change the name of the class in globals
+        globals()[f"{cls.__name__}_{param_dict['W']}"] = new_class
+        return new_class
+        
+    
             
     @classmethod
     def check_params(cls, params):
@@ -124,28 +151,3 @@ class iob_module:
             else:
                 p.print_port_assign(comma=True)
         print(f"  );")
-
-def unit_test():
-    # Create 2 wires
-    w0 = iob_wire(name='w0', width=1)
-    w0.set_value('z')
-    w1 = iob_wire(name='w1', width=1)
-    w1.set_value('x')
-
-    # create module
-    m0 = iob_module(
-        #module
-        description = "This is a test module",
-        #instance
-        instance_name = 'm0',
-        port_map = {
-            'a0': w0,
-            'o0': w1
-        },
-    )
-                    
-    m0.print_verilog_module()
-    m0.print_verilog_module_inst()
-    
-if __name__ == "__main__":
-    unit_test()
