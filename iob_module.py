@@ -74,7 +74,7 @@ class iob_module:
         value_list = [attr for attr in vars(self).values() if isinstance(attr, iob_wire)]
         for v in value_list: 
             expr = expr.replace(v.name, f'self.{v.name}')
-        getattr(self, dest).set_value(eval(expr))
+        getattr(self, dest).set_value(eval(expr).get_value())
         self.assign_list.append(assign)
         return assign
 
