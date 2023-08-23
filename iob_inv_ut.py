@@ -1,11 +1,6 @@
 from iob_inv import iob_inv
 from iob_wire import iob_wire
 
-class iob_inv_4(iob_inv):
-    '''Class for the INV gate module with 4-bit operands and result'''
-    param_dict = {'W': 4}
-    descriprion = "General bit-wise INV gate with 4-bit operands and result"
-
 def unit_test():
     """Unit test for iob_inv"""
 
@@ -15,11 +10,11 @@ def unit_test():
     w0 = iob_wire(name='w0', width=width)
     w0.set_value(0)
     w1 = iob_wire(name='w1', width=width)
-
     
     # Create instance
-    inv0 = iob_inv_4(
+    inv0 = iob_inv.create(
         description = f'1-input bit-wise INV gate with {width} bit operand and result',
+        param_dict={'W': width},
         instance_name = 'inv0',
         port_map = {
             'i0': w0,

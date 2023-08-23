@@ -18,7 +18,7 @@ def unit_test():
     w4.set_value(1)
 
     # Create module
-    aoi0 = iob_aoi.new_instance(
+    aoi0 = iob_aoi.create(
         description = f'AOI module for {width}-bit operands',
         param_dict = {'W': width},
         instance_name = 'aoi0',

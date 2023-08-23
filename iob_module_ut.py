@@ -8,7 +8,7 @@ def unit_test():
     w0 = iob_wire(name='w0', width=width)
     w1 = iob_wire(name='w1', width=width)
     
-    m0 = iob_module.new_instance(
+    m0 = iob_module.create(
         description = "This is a test module",
         param_dict = {'W': width},
         instance_name = 'm0',

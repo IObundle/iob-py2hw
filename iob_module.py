@@ -74,12 +74,12 @@ class iob_module:
         value_list = [attr for attr in vars(self).values() if isinstance(attr, iob_wire)]
         for v in value_list: 
             expr = expr.replace(v.name, f'self.{v.name}')
-        getattr(self, dest).set_value(eval(expr))
+        getattr(self, dest).set_value(eval(expr).get_value())
         self.assign_list.append(assign)
         return assign
 
     @classmethod
-    def new_instance(cls, param_dict, instance_name, port_map, description):
+    def create(cls, param_dict, instance_name, port_map, description):
         """Create a new instance of the module and the necessary subclasses"""
         new_class = cls.create_subclass(param_dict)
         inst = new_class(instance_name=instance_name, port_map=port_map, description=description)

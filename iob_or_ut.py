@@ -1,12 +1,6 @@
 from iob_or import iob_or
 from iob_wire import iob_wire
 
-
-class iob_or_3(iob_or):
-    '''Class for the OR gate module with 3-bit operands and result'''
-    param_dict = {'W': 3}
-    descriprion = "General bit-wise OR gate with default 1-bit operands and result"
-
 def unit_test():
     """Unit test for iob_or"""
 
@@ -20,11 +14,9 @@ def unit_test():
     w2 = iob_wire(name='w2', width=width)
     w2.set_value(0)
     
-    # Create instance
-    or0 = iob_or_3(
-        #module
+    or0 = iob_or.create(
         description=f'2-input bit-wise OR gate with {width} bit operands and result',
-        #instance
+        param_dict={'W': width},
         instance_name = 'or0',
         port_map = {
             'i0': w0,

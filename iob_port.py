@@ -93,9 +93,9 @@ def unit_test():
     assert port2.get_value() == '00101100'
     assert wire2.get_value() == '00101100'
 
-    assert (port0 == port1) == False
-    assert (port1 == port1) == True
-    assert (port1 & port2) == '00101000'
+    assert (port0 == port1).get_value() == '0'
+    assert (port1 == port1).get_value() == '1'
+    assert (port1 & port2).get_value() == '00101000'
 
     port0.print_port()
     port1.print_port()
