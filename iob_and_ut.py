@@ -14,7 +14,7 @@ def unit_test():
     w2 = iob_wire(name='w2', width=width)
 
     # Create an instance
-    and0 = iob_and.new_instance(
+    and0 = iob_and.create(
         description=f'2-input bit-wise AND gate with {width} bit operands and result',
         param_dict={'W': width},
         instance_name = 'and0',

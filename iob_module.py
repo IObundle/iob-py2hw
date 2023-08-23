@@ -79,7 +79,7 @@ class iob_module:
         return assign
 
     @classmethod
-    def new_instance(cls, param_dict, instance_name, port_map, description):
+    def create(cls, param_dict, instance_name, port_map, description):
         """Create a new instance of the module and the necessary subclasses"""
         new_class = cls.create_subclass(param_dict)
         inst = new_class(instance_name=instance_name, port_map=port_map, description=description)
