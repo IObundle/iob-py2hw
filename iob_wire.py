@@ -46,7 +46,9 @@ class iob_wire:
                 raise ValueError(f'Cannot compare wires of different widths {self.width} and {other.width}')
         else:
             raise ValueError(f'Cannot compare iob_wire and {type(other)}')
-        return self.get_value() == other.get_value()
+        temp_wire = iob_wire('temp', 1)
+        temp_wire.set_value(self.get_value() == other.get_value())
+        return temp_wire
 
     # Bitwise operators
     def __invert__(self):
@@ -58,7 +60,9 @@ class iob_wire:
                 result += '0'
             else:
                 result += 'x'
-        return result
+        temp_wire = iob_wire('temp', self.width)
+        temp_wire.set_value(result)
+        return temp_wire
 
     def __and__(self, other):
         if isinstance(other, iob_wire):
@@ -74,7 +78,9 @@ class iob_wire:
                 result += '0'
             else:
                 result += 'x'
-        return result
+        temp_wire = iob_wire('temp', self.width)
+        temp_wire.set_value(result)
+        return temp_wire
 
     def __or__(self, other):
         if isinstance(other, iob_wire):
@@ -90,7 +96,9 @@ class iob_wire:
                 result += '0'
             else:
                 result += 'x'
-        return result
+        temp_wire = iob_wire('temp', self.width)
+        temp_wire.set_value(result)
+        return temp_wire
 
     def __str__(self):
         return f'{self.name}'

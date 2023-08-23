@@ -122,7 +122,7 @@ class iob_module:
         port_list = [attr for attr in vars(self).values() if isinstance(attr, iob_port)]
         for p in port_list:
             #test if the last element
-            if p == port_list[-1]:
+            if p is port_list[-1]:
                 p.print_port(comma=False)
             else:
                 p.print_port(comma=True)
@@ -146,7 +146,7 @@ class iob_module:
         port_list = [attr for attr in vars(self).values() if isinstance(attr, iob_port)]
         for p in port_list:
             #test if the last element
-            if p == port_list[-1]:
+            if p is port_list[-1]:
                 p.print_port_assign(comma=False)
             else:
                 p.print_port_assign(comma=True)
