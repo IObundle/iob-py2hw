@@ -1,6 +1,5 @@
 from iob_aoi import iob_aoi
 from iob_wire import iob_wire
-import copy
 
 def unit_test():
     '''Unit test for AOI module'''
