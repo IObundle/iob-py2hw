@@ -3,17 +3,14 @@ from iob_wire import iob_wire
 import copy
     
 def unit_test():
-    # Create 2 wires
-    w0 = iob_wire(name='w0', width=1)
-    w0.set_value('z')
-    w1 = iob_wire(name='w1', width=1)
-    w1.set_value('x')
-
-    # create module
-    m0 = iob_module(
-        #module
+    width = 7
+    
+    w0 = iob_wire(name='w0', width=width)
+    w1 = iob_wire(name='w1', width=width)
+    
+    m0 = iob_module.new_instance(
         description = "This is a test module",
-        #instance
+        param_dict = {'W': width},
         instance_name = 'm0',
         port_map = {
             'a0': w0,

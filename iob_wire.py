@@ -29,7 +29,7 @@ class iob_wire:
         # if value is boolean convert to string and check self.width = 1
         elif isinstance(value, bool):
             if self.width != 1:
-                raise ValueError(f'Value {value} is not the correct width {self.width}')
+                raise ValueError(f'Boolean values must be assigned to wires of width 1')
             value = '1' if value else '0'
         self.value = value
 
