@@ -20,6 +20,8 @@ class iob_module:
     def __init__(self, instance_name, port_map, description):
         self.instance_name = instance_name
         self.description = description
+        if len(port_map) != len(self.__class__.ports):
+            raise ValueError("Port map is not the expected size")
         for name, info in self.__class__.ports.items():
             if name not in port_map:
                 raise ValueError(f"Port {name} is missing")
@@ -81,6 +83,7 @@ class iob_module:
     @classmethod
     def create(cls, param_dict, instance_name, port_map, description):
         """Create a new instance of the module and the necessary subclasses"""
+        cls.check_params(param_dict)
         new_class = cls.create_subclass(param_dict)
         inst = new_class(instance_name=instance_name, port_map=port_map, description=description)
         return inst
@@ -97,8 +100,6 @@ class iob_module:
         # Change the name of the class in globals
         globals()[f"{cls.__name__}_{param_dict['W']}"] = new_class
         return new_class
-        
-    
             
     @classmethod
     def check_params(cls, params):
