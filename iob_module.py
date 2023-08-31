@@ -94,6 +94,13 @@ class iob_module:
     @classmethod
     def create_chain(cls, new_class, instance_name, port_map, description):
         """Create a chain of modules"""
+        length = len(port_map[list(port_map.keys())[0]])
+        instances = {} 
+        for i in range(length):
+            port_map_i = {name:port_map[name][i] for name in port_map}
+            instances[f"{instance_name}_{i}"] = {'module': new_class, 'port_map': port_map_i, 'description': description}
+        
+
         #Not implemented yet
         #TODO: Implement create_chain
         pass
