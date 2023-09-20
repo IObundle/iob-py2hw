@@ -85,9 +85,26 @@ class iob_module:
         """Create a new instance of the module and the necessary subclasses"""
         cls.check_params(param_dict)
         new_class = cls.create_subclass(param_dict)
-        inst = new_class(instance_name=instance_name, port_map=port_map, description=description)
+        if cls.is_chain(port_map):
+            inst = cls.create_chain(new_class, instance_name, port_map, description)
+        else:
+            inst = new_class(instance_name=instance_name, port_map=port_map, description=description)
         return inst
 
+    @classmethod
+    def create_chain(cls, new_class, instance_name, port_map, description):
+        """Create a chain of modules"""
+        length = len(port_map[list(port_map.keys())[0]])
+        instances = {} 
+        for i in range(length):
+            port_map_i = {name:port_map[name][i] for name in port_map}
+            instances[f"{instance_name}_{i}"] = {'module': new_class, 'port_map': port_map_i, 'description': description}
+        
+
+        #Not implemented yet
+        #TODO: Implement create_chain
+        pass
+    
     @classmethod
     def create_subclass(cls, param_dict):
         new_instances = copy.deepcopy(cls.instances)
@@ -115,7 +132,32 @@ class iob_module:
                     break
             else:
                 raise ValueError(f"Param {p} is not valid for {cls.__name__}")
-            
+
+    @classmethod
+    def is_chain(cls, port_map):
+        """Check if values in port_map are lists or wires/ports"""
+        length = None
+        is_chain = None
+        if not isinstance(port_map, dict):
+            raise ValueError("Port map must be a dictionary")
+        for p in port_map:
+            if isinstance(port_map[p], list):
+                if is_chain is None:
+                    is_chain = True
+                    length = len(port_map[p])
+                elif is_chain is False:
+                    raise ValueError("Port map is not valid, lists and wires/ports cannot be mixed")
+                elif length != len(port_map[p]): 
+                    raise ValueError("Port map is not valid, lists must be the same length")
+            elif isinstance(port_map[p], (iob_wire, iob_port)):
+                if is_chain is None:
+                    is_chain = False
+                elif is_chain is True:
+                    raise ValueError("Port map is not valid, lists and wires/ports cannot be mixed")
+            else:
+                raise ValueError("Port map is not valid, values must be lists or wires/ports")
+        return is_chain
+                
     def print_verilog_module(self):
         print(f"module {self.__class__.__name__}")
         print(f"  (")

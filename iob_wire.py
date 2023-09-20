@@ -33,6 +33,13 @@ class iob_wire:
             value = '1' if value else '0'
         self.value = value
 
+    @classmethod
+    def create_list(cls, name, width, num):
+        _list = []
+        for i in range(num):
+            _list.append(cls(name=f'{name}_{i}', width=width))
+        return _list
+
     def get_value(self):
         return self.value
 
